@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +28,7 @@
     .answer.correct{ border-color:#00d26a; background:#123a23; }
     .answer.wrong{ border-color:#ff4b4b; background:#451919; }
     .answer.disabled{ pointer-events:none; opacity:0.9; }
-    .explanation{ margin-top:16px; padding:14px; border-radius:12px; background:#12181e; display:none; }
+    .explanation{ margin-top:16px; padding:14px; border-radius:12px; background:#12181e; display:none; scroll-margin-top:80px; }
     .memory{ margin-top:10px; padding:10px; border-left:4px solid #2b7cff; background:#111923; font-size:0.95rem; }
     .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
     .stat{ background:#171f27; border-radius:14px; padding:16px; text-align:center; border:1px solid #2b3540; }
@@ -42,8 +41,9 @@
     .tip{ background:#1a2634; padding:14px; border-radius:10px; border-left:4px solid #2b7cff; }
     .tip strong{ color:#2b7cff; }
     .cram-grid{ display:grid; gap:12px; }
-    .nav-buttons{ display:flex; gap:10px; flex-wrap:wrap; margin-top:15px; }
-    .progress-bar{ width:100%; height:8px; background:#253240; border-radius:4px; margin:10px 0; overflow:hidden; }
+    .nav-buttons{ display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; position:relative; z-index:10; }
+    .nav-buttons button{ font-size:0.95rem; padding:10px 14px; }
+    .progress-bar{ width:100%; height:8px; background:#253240; border-radius:4px; margin:10px 0 0 0; overflow:hidden; }
     .progress-fill{ height:100%; background:#2b7cff; transition:width 0.3s; }
     h2{ margin-top:0; color:#2b7cff; }
     h3{ color:#2b7cff; margin-top:16px; margin-bottom:8px; }
@@ -290,120 +290,64 @@
 </main>
 
 <script>
-// ==================== 50+ QUESTIONS ====================
+// ==================== 57 QUESTIONS ====================
 const questions = [
     {category:"Airway",question:"A 45-year-old male is unresponsive with snoring respirations. His gag reflex is absent. What is your first intervention?",answers:["Apply high-flow oxygen","Insert an oropharyngeal airway","Perform needle cricothyrotomy","Insert a nasopharyngeal airway"],correct:1,explanation:"An oropharyngeal (OPA) airway is indicated for an unresponsive patient with no gag reflex. This maintains airway patency.",memory:"OPA = unconscious + NO gag reflex. NPA = gag reflex present."},
-
     {category:"Breathing",question:"You arrive at a 68-year-old with respiratory rate of 8/min and shallow depth. What do you do?",answers:["Provide high-flow oxygen only","Begin BVM ventilation at 10–12 breaths/min","Wait for ALS to intubate","Place patient in Fowler's position"],correct:1,explanation:"Inadequate respirations (slow + shallow) require immediate BVM ventilation. Do not delay.",memory:"Slow/shallow breathing = BVM NOW. 500–600 mL per breath, 10–12/min."},
-
     {category:"Circulation",question:"A trauma patient has pale, cool, clammy skin; heart rate 130; and weak pulses. Blood pressure is 88/60. What is this?",answers:["Stable shock","Hypovolemic shock","Anaphylaxis","Septic shock"],correct:1,explanation:"Pale, cool, clammy + tachycardia + hypotension = hypovolemic shock. Treat with oxygen, position, fluids (ALS), rapid transport.",memory:"Cool, clammy, fast pulse, low BP = hypovolemic shock. Think BLEEDING."},
-
     {category:"Shock",question:"A 22-year-old female is found unresponsive after possible bee sting. She has urticaria (hives), wheezing, and facial edema. BP 80/50. What do you do FIRST?",answers:["Give oral glucose","Administer epinephrine IM if available","Provide high-flow oxygen","Transport supine"],correct:1,explanation:"Anaphylaxis with hypotension requires immediate epinephrine IM (0.3 mg adult). Follow with oxygen and rapid transport.",memory:"Anaphylaxis = Epi-pen IM. Hives + wheezing + swelling = SEVERE. Don't wait."},
-
     {category:"Stroke",question:"A 67-year-old has sudden onset facial drooping, arm drift, and slurred speech. You note the time is 1400. What is most critical?",answers:["Perform a full neuro exam","Document last known well time","Check glucose immediately","Administer aspirin"],correct:1,explanation:"Stroke care hinges on time. Last known well determines if thrombolytics are an option (IV-tPA window ~4.5 hr). Document it.",memory:"FAST + TIME = Stroke saves lives. Note when he was last normal."},
-
     {category:"Diabetes",question:"A 34-year-old diabetic is confused, diaphoretic, and trembling. You suspect hypoglycemia. Glucometer reads 55 mg/dL. What do you do?",answers:["Give 1 amp of D50 IV","Administer 15 g of oral glucose","Transport without intervention","Give insulin"],correct:1,explanation:"Alert patient with low glucose = oral glucose (15 g). If no improvement in 10 min or altered LOC, transport for IV D50 (ALS).",memory:"Hypoglycemia + ALERT = Glucose by mouth. Hyperglycemia = nothing (insulin at hospital)."},
-
     {category:"Seizure",question:"A patient is actively seizing. You are alone. What do you do?",answers:["Restrain the patient's limbs","Call for ALS, protect from injury, position head to side","Place a bite block in the mouth","Give aspirin"],correct:1,explanation:"During seizure: protect from injury, note duration, turn head to side if safe, call for help. Do NOT restrain or use bite block.",memory:"Seizure = Protect, Time, Don't restrain, Transport."},
-
     {category:"Trauma",question:"A 42-year-old struck by a car has absent breath sounds on the right, tracheal deviation, and hypotension. What do you suspect?",answers:["Pneumonia","Tension pneumothorax","Hemopneumothorax","Rib fracture"],correct:1,explanation:"Absent BS + tracheal deviation + hypotension = tension pneumothorax. This is a LOAD-AND-GO. ALS may do needle decompression.",memory:"Trachea pointing away = Tension pneumo = EMERGENCY."},
-
     {category:"Chest Injury",question:"A 55-year-old has a penetrating chest wound. Blood is welling from the opening with each breath. What is this called?",answers:["Pneumothorax","Hemothorax","Sucking chest wound","Flail chest"],correct:2,explanation:"Sucking chest wound = air entering the pleural space. Treatment: seal with occlusive dressing (3 sides in some protocols).",memory:"Sucking wound = Air in = Seal it."},
-
     {category:"Bleeding",question:"An 18-year-old has severe arterial bleeding from the thigh. Direct pressure is not slowing it. What do you do?",answers:["Apply cold compress","Apply a tourniquet above the wound","Elevate the leg","Give oral glucose"],correct:1,explanation:"Arterial bleeding not controlled by direct pressure = tourniquet. Place 2–3 inches above the wound, tighten until bleeding stops.",memory:"Arterial = Dark red, spurting. Tourniquet if direct pressure fails."},
-
     {category:"Airway",question:"You have a patient with a basilar skull fracture (Battle's sign, raccoon eyes). Which airway device is CONTRAINDICATED?",answers:["Oropharyngeal airway","Nasopharyngeal airway","Bag-valve-mask","Suction catheter"],correct:1,explanation:"Nasopharyngeal airway is contraindicated in basilar skull fracture due to risk of intracranial placement (CSF).",memory:"Basilar skull fracture = NO NPA. OPA only."},
-
     {category:"Breathing",question:"An asthmatic 14-year-old is wheezing, using accessory muscles, and speaking only 1–2 words. What is the priority?",answers:["Transport supine","High-flow oxygen, position up, rapid transport","Give oral glucose","Perform CPR"],correct:1,explanation:"Respiratory distress with poor air movement = high-flow O₂, upright position, rapid transport to facility with albuterol.",memory:"Accessory muscles + 1-word dyspnea = SEVERE asthma."},
-
     {category:"Cardiac",question:"A 68-year-old is found unresponsive, pulseless, apneic. EMS is 8 minutes away. What do you do?",answers:["Wait for ALS","Begin CPR immediately at 100–120 compressions/min","Give rescue breaths only","Transport supine without intervention"],correct:1,explanation:"Pulseless, apneic = cardiac arrest. Begin CPR at 100–120 compressions/min. Push hard, push fast. Do not delay.",memory:"No pulse = CPR NOW."},
-
     {category:"Pediatric",question:"A 3-year-old is in severe respiratory distress with stridor and fever. You suspect epiglottitis. What do you do?",answers:["Force the child to lie flat","Keep child calm, do NOT agitate, sit upright, prepare for airway emergency, rapid transport","Perform blind finger sweep","Give oxygen mask firmly"],correct:1,explanation:"Epiglottitis is an airway emergency. Keep child calm, allow position of comfort, prepare for loss of airway, rapid transport.",memory:"Epiglottitis = Stridor + Fever + Drooling = Do NOT agitate. Transport fast."},
-
     {category:"Obstetrics",question:"A pregnant woman at 7 months is in shock with vaginal bleeding. What is the mechanism?",answers:["Labor onset","Placenta previa","Abruptio placentae","Normal spotting"],correct:2,explanation:"Shock + vaginal bleeding in 3rd trimester = abruptio placentae (placental abruption). Treat shock, rapid transport.",memory:"Pregnant + bleeding + shock = Abruption. RIP (rapid)"},
-
     {category:"Obstetrics",question:"A woman is crowning during labor. What should you do?",answers:["Push harder for her","Prepare for delivery, support the head as it crowns, gentle traction","Attempt to delay delivery","Cut the umbilical cord"],correct:1,explanation:"Crowning = imminent delivery. Do NOT hold back. Support head, let gravity help. If cord around neck, slip it off. Dry infant.",memory:"Crown visible = Baby coming. Support = Don't hold back."},
-
     {category:"Burns",question:"A 45-year-old has thermal burns to both legs and torso (40% TBSA). What is the priority fluid?",answers:["Dextrose 5% in water","Normal saline or Lactated Ringer's (ALS)","Whole blood","Oral hydration"],correct:1,explanation:"Major burn = crystalloid (normal saline/LR) IV fluids (ALS). EMT-B: O₂, remove from heat, cover with clean dry cloth, rapid transport.",memory:"Burns >15% = Fluid resuscitation needed. Cool the burn."},
-
     {category:"Poisoning",question:"A 6-year-old ingested an unknown substance 20 minutes ago. The child is alert with normal vitals. What do you do?",answers:["Give activated charcoal immediately","Contact poison control, transport","Do nothing, observe at home","Induce vomiting"],correct:1,explanation:"Unknown ingestion in alert patient = contact poison control (1-800-222-1222 in US) and transport. Do NOT induce vomiting.",memory:"Poisoning = Poison Control + Transport. NO vomit induction."},
-
     {category:"Trauma",question:"A pedestrian is struck by a car. You suspect head injury. What is your approach?",answers:["Place in recovery position","Maintain spine precautions, high-flow O₂, monitor LOC, rapid transport","Elevate the head 30 degrees","Apply ice to head"],correct:1,explanation:"Suspected head injury = maintain C-spine immobilization, oxygen, monitor mental status, rapid transport.",memory:"Head injury = Spine precautions, O₂, watch LOC, TRANSPORT."},
-
     {category:"Musculoskeletal",question:"A 40-year-old has a deformed, swollen lower leg after a fall. Pedal pulse is weak. What do you do?",answers:["Splint in the deformed position","Align limb gently, splint, check distal pulse/sensation/motor","Elevate and ice","Apply a tourniquet"],correct:1,explanation:"Deformity with weak pulse = possible arterial compromise. Gentle alignment, splint, reassess circulation. If no improvement, immobilize and transport rapidly.",memory:"Weak pulse + deformity = Align, splint, re-check pulse."},
-
     {category:"Environmental",question:"A hypothermic patient is found unresponsive in icy water. Core temp ~30°C. No pulse felt after 10 seconds. What is your action?",answers:["Declare death at scene","Begin CPR gently, transport WITHOUT stopping CPR","Vigorous rewarming at scene","Assume rigor mortis is present"],correct:1,explanation:"Hypothermic arrest = cold and dead. Gentle CPR, warm passively en route, transport (may resuscitate after rewarming). Don't give up.",memory:"Hypothermia = Gentle CPR. 'Not dead until warm and dead.'"},
-
     {category:"Toxicology",question:"A 55-year-old has pinpoint pupils, slow respirations (6/min), and is unresponsive. You suspect opioid overdose. What do you do?",answers:["Give naloxone (Narcan) IM/IN if available","BVM ventilation, rapid transport","Apply tourniquet","Do nothing, let ALS handle it"],correct:0,explanation:"Opioid overdose (pinpoint pupils, respiratory depression) = naloxone 0.4–2.4 mg IV/IM/IN (if EMT-B scope allows). Also provide BVM ventilation.",memory:"Pinpoint pupils + no breathing = OPIOID = Narcan + BVM."},
-
     {category:"Cardiac",question:"A 52-year-old complains of chest pressure radiating to the jaw and left arm. BP 110/70, HR 88. What is most important?",answers:["Reassure and observe at home","Aspirin (if not contraindicated), oxygen, position of comfort, rapid transport","Perform CPR","Give nitroglycerin without asking for current medications"],correct:1,explanation:"Chest pain radiating to jaw/arm + stable vitals = possible ACS. Aspirin (if alert, no allergy/asthma), O₂, comfort, rapid transport.",memory:"Chest pain = Aspirin + O₂ + Transport (not home)."},
-
     {category:"Respiratory",question:"A COPD patient is on home oxygen at 2 L/min and is now short of breath. What is the concern with high-flow O₂?",answers:["High-flow O₂ causes combustion","High O₂ may suppress respiratory drive in some COPD patients","O₂ is always safe","High-flow O₂ causes seizures"],correct:1,explanation:"Some COPD patients rely on hypoxia to drive breathing (hypoxic drive). However, NEVER withhold O₂ if hypoxic. Monitor closely.",memory:"COPD + O₂ = Watch LOC/RR but give O₂ if SpO2 <90%."},
-
     {category:"Pediatric",question:"An 8-month-old has barky cough, stridor, and respiratory distress. Parents say onset was sudden last night. What is this?",answers:["Epiglottitis","Croup (laryngotracheobronchitis)","Asthma","Pneumonia"],correct:1,explanation:"Barky cough + stridor in infant = croup. Usually viral, self-limited. Supportive care: mist, cool air, oxygen if hypoxic.",memory:"Barky cough + infant = Croup. Cool mist helps."},
-
     {category:"Trauma",question:"A 30-year-old has a penetrating abdominal wound with bowel protruding. What is your action?",answers:["Push bowel back in","Do NOT touch bowel. Cover with moist sterile dressing. Position knees bent (comfort). Rapid transport.","Elevate the abdomen","Apply pressure to stop bleeding"],correct:1,explanation:"Evisceration = do NOT reinsert bowel. Cover with clean moist dressing, keep warm, transport rapidly.",memory:"Guts out = Don't push back. Moist sterile cover. TRANSPORT."},
-
     {category:"Cardiac",question:"You find a 72-year-old in VF (verified on defibrillator). AED is at scene. What do you do?",answers:["Apply AED and shock","Perform 2 minutes of CPR first, then shock","Wait for ALS to shock","Transport supine without intervention"],correct:0,explanation:"VF = shockable rhythm. Apply AED and shock ASAP. Minimize delay. Perform CPR between shocks per AED prompts.",memory:"VF = SHOCK FIRST (or CPR if delay >few sec)."},
-
     {category:"Drowning",question:"A 5-year-old is pulled from the pool, unresponsive, cyanotic. What is your priority?",answers:["Position in recovery position","High-flow oxygen, BVM if apneic, rapid transport to hospital","Perform Heimlich maneuver","Drain water from lungs"],correct:1,explanation:"Near-drowning = airway, breathing (BVM), rapid transport. Secondary drowning can occur hours later due to aspiration.",memory:"Drowning = O₂, BVM, Transport. Aspiration is delayed danger."},
-
     {category:"Allergic Reaction",question:"A 28-year-old has facial swelling, itching, and mild wheezing 5 minutes after eating shellfish. Pulse 100, BP 120/80. What do you give?",answers:["Aspirin","Epinephrine IM 0.3 mg","Oxygen, monitor, transport (mild anaphylaxis = still serious)","Nothing, observe at home"],correct:2,explanation:"Early anaphylaxis with airway involvement (wheezing) warrants epinephrine AND oxygen, even if BP stable. Monitor for progression.",memory:"Any wheezing + allergic hx = Epi-pen + O₂ + Transport."},
-
     {category:"Respiratory",question:"A 45-year-old has acute dyspnea, pink frothy sputum, and rales bilaterally. What is this?",answers:["Asthma","Acute pulmonary edema (cardiogenic)","Pneumonia","Pneumothorax"],correct:1,explanation:"Pink frothy sputum + rales = pulmonary edema (usually from CHF). Oxygen, upright position, rapid transport. ALS may give CPAP.",memory:"Pink frothy = Pulmonary edema = CHF. Sitting up helps."},
-
     {category:"Pediatric",question:"A 4-year-old has fever, sore throat, and drooling. He can barely swallow. What do you suspect?",answers:["Common cold","Pharyngitis (strep throat)","Epiglottitis (keep CALM, no agitation, rapid transport)","Laryngitis"],correct:2,explanation:"Fever + drooling + dysphagia + stridor (often absent in epiglottitis) = concern for epiglottitis. Do NOT examine throat. Transport rapidly.",memory:"Drooling + fever + can't swallow = EPIGLOTTITIS risk. Transport, do NOT agitate."},
-
     {category:"Shock",question:"A 60-year-old is in cardiogenic shock from an MI. HR 110, BP 85/60, rales. What is the treatment?",answers:["Give fluids aggressively","Oxygen, position of comfort (semi-upright to help breathing), monitor, ALS fluids carefully (may worsen pulmonary edema)","Elevate legs aggressively","Aspirin only"],correct:1,explanation:"Cardiogenic shock from MI = airway, oxygen, avoid fluid overload (already in pulmonary edema). ALS will titrate fluids carefully.",memory:"Cardiogenic shock = O₂, semi-upright, careful fluids (NOT aggressive)."},
-
     {category:"Environmental",question:"A hiker is found confused after 6 hours in hot sun. Core temp ~40°C. Skin hot, dry. What is this?",answers:["Heat exhaustion","Heatstroke","Dehydration","Normal heat response"],correct:1,explanation:"Hot skin + altered LOC + high temp = heatstroke. Cool aggressively (remove clothes, wet down, fan), oxygen, rapid transport.",memory:"Heatstroke = HOT SKIN + ALTERED LOC = COOL NOW."},
-
     {category:"Trauma",question:"An unrestrained driver struck a tree at high speed. He is awake, calm, and alert. What is your approach?",answers:["Discharge if no obvious injury","High-speed mechanism = potential for serious internal injury. Full assessment, oxygen, rapid transport.","Splint visible injuries only","Transport to nearest clinic"],correct:1,explanation:"Mechanism of injury (MOI) is critical. High-speed trauma can hide internal bleeding, organ injury. Treat seriously even if asymptomatic.",memory:"High MOI = High suspicion for serious injury. Transport all."},
-
     {category:"Seizure",question:"A patient has had 3 seizures in the last 30 minutes. He is post-ictal. What is this condition?",answers:["Febrile seizure","Status epilepticus","Petit mal seizure","Simple partial seizure"],correct:1,explanation:"Status epilepticus = recurrent seizures without full recovery between them. Emergency. Oxygen, protect airway, rapid transport, ALS early.",memory:"Recurrent seizures = Status. Rapid transport, call ALS ASAP."},
-
     {category:"Airway",question:"A choking 3-year-old cannot cough or cry. What is your action?",answers:["Encourage coughing","Abdominal thrusts for infant? NO — use back blows + chest thrusts. For toddler, abdominal thrusts OK.","Blind finger sweep","Perform CPR"],correct:1,explanation:"Choking infant <1 yr = back blows + chest thrusts. Toddler/child = abdominal thrusts (CPR if becomes unconscious).",memory:"Infant choking = Back blows + Chest thrusts (not abdo)."},
-
     {category:"Poison",question:"A 34-year-old drank an unknown amount of antifreeze. He is alert, joking, normal vitals. What do you do?",answers:["Observe at home","Transport for evaluation (ethylene glycol toxicity is delayed 12–24 hrs, can be fatal)","Give activated charcoal","Wait for symptoms to appear"],correct:1,explanation:"Antifreeze (ethylene glycol) poisoning is insidious. Appears fine initially, then metabolic acidosis, renal failure. Transport all suspected cases.",memory:"Antifreeze = Delayed toxicity = Transport all cases."},
-
     {category:"Cardiac",question:"A 58-year-old with palpitations is found to have an irregular rhythm at 160 bpm. He is alert, BP 100/65. What is the rhythm likely to be?",answers:["Atrial fibrillation with RVR","Sinus tachycardia","Ventricular tachycardia","Asystole"],correct:0,explanation:"Irregular rhythm + fast + alert = likely afib with RVR (atrial fibrillation with rapid ventricular response). Oxygen, monitor, transport, ALS.",memory:"Irregular fast + alert = Afib. Regular fast = V-tach or SVT."},
-
     {category:"Respiratory",question:"A 67-year-old has acute dyspnea, chest pain, and leg swelling. You suspect PE (pulmonary embolism). What do you do?",answers:["Give aspirin and discharge","Oxygen, position of comfort, monitor, rapid transport, ALS may give heparin","Massage the leg","Elevate the leg aggressively"],correct:1,explanation:"Suspected PE = oxygen, position of comfort, monitor vital signs, avoid leg massage (may dislodge clot), rapid transport.",memory:"Dyspnea + leg swelling + chest pain = Possible PE. O₂, transport."},
-
     {category:"Obstetrics",question:"A woman at 8 months pregnant has sudden severe abdominal pain and vaginal bleeding. She is in shock (BP 80/60, HR 130). What is the likely diagnosis?",answers:["Labor","Placenta previa","Abruptio placentae","Gestational diabetes"],correct:2,explanation:"Shock + severe pain + bleeding in 3rd trimester = abruption (placental abruption). Treat shock aggressively, rapid transport.",memory:"Pregnant + shock + pain + bleeding = ABRUPTION. Maternal/fetal emergency."},
-
     {category:"Environmental",question:"A 45-year-old with known hypothermia (core temp 28°C) is found pulseless and apneic. He appears dead (rigid, no response). What is your action?",answers:["Pronounce dead at scene","Begin gentle CPR. Hypothermia = reversible. Transport without stopping CPR.","Vigorous rewarming","Assume rigor mortis and leave him"],correct:1,explanation:"Profound hypothermia can appear like death. Begin CPR gently, transport continuously. Rewarming occurs at hospital.",memory:"'Nobody is dead until warm and dead.' CPR in hypothermia."},
-
     {category:"Allergic",question:"A 22-year-old has swollen lips/tongue and stridor 15 min after IV contrast for CT scan. BP 95/60. What is this?",answers:["Delayed reaction","Anaphylaxis = epinephrine IM NOW","Local swelling","Anxiety"],correct:1,explanation:"Angioedema + stridor + hypotension = anaphylaxis. Epinephrine IM 0.3 mg, oxygen, rapid transport.",memory:"Stridor + lip swelling + low BP = EPI-PEN NOW."},
-
     {category:"Trauma",question:"A motorcycle rider has road rash (abrasion) with embedded gravel. How do you treat it?",answers:["Leave gravel in place until hospital","Gently clean with soap and water, remove debris, cover with sterile dressing","Apply direct pressure to stop bleeding","Do not touch the wound"],correct:1,explanation:"Road rash = abrasion. Gently cleanse, remove debris (to prevent tattooing), cover. If very dirty, transport for irrigation.",memory:"Road rash = Clean, remove dirt, cover."},
-
     {category:"Cardiac",question:"An elderly patient has sudden onset chest pain and loss of consciousness. No pulse. You begin CPR. After 2 minutes, you deliver a shock (VF). What comes next?",answers:["Stop CPR and reassess rhythm","Resume CPR immediately for 2 minutes, then recheck rhythm","Wait 30 seconds before CPR","Give medications only"],correct:1,explanation:"Post-shock: resume CPR immediately. Check rhythm every 2 minutes after AED prompts. Do NOT repeatedly check for pulse.",memory:"Shock given = CPR resume NOW x 2 min. Cycle continues."},
-
     {category:"Pediatric",question:"A 6-year-old has difficulty breathing, oxygen saturation 92%, and looks \"tired.\" What is your concern?",answers:["Minor respiratory distress","Fatigue = IMPENDING RESPIRATORY FAILURE. Oxygen, BVM ready, prepare for airway emergency, transport.","The child is fine, just tired","Observe for 1 hour"],correct:1,explanation:"A child who appears 'tired' or 'calm' during respiratory distress is compensating poorly and may arrest soon. Treat urgently.",memory:"Tired-looking kid + low O₂ = DANGER. Not reassuring."},
-
     {category:"Poisoning",question:"A 16-year-old took an entire bottle of ibuprofen 30 minutes ago and is asymptomatic. What do you do?",answers:["Send home, no treatment needed","Contact poison control, offer activated charcoal (if protocol allows), transport","Wait for symptoms to appear at home","Force vomiting"],correct:1,explanation:"Overdose = poison control and transport. Timing matters for charcoal (usually <1 hr). Better safe than sorry.",memory:"Overdose = Poison Control 1-800-222-1222 + Transport."},
-
     {category:"Shock",question:"A 3-year-old has fever, petechial rash, altered mental status, and poor perfusion. What is the likely diagnosis?",answers:["Scarlet fever","Septic shock (likely meningococcemia)","Chickenpox","Fifth disease"],correct:1,explanation:"Petechial rash + fever + shock in child = meningococcemia/sepsis. High-flow oxygen, IV access (ALS), rapid transport.",memory:"Petechiae + fever + altered = Meningococcal. EMERGENCY."},
-
     {category:"Airway",question:"A patient has severe facial trauma with airway compromise. What is your priority?",answers:["Perform CPR","Manually clear airway, keep inline with C-spine if MOI suggests it, consider NPA or OPA if feasible, HIGH-FLOW O₂, rapid transport","Apply nasal cannula","Transport supine"],correct:1,explanation:"Facial trauma = airway emergency. Clear blood/secretions, oxygen, spine precautions, rapid transport. Have suction ready.",memory:"Facial trauma = Airway threat. Clear, O₂, transport NOW."},
-
     {category:"Respiratory",question:"An adult has severe respiratory distress with unequal breath sounds and hypotension after a stab wound to the chest. What is this?",answers:["Simple pneumothorax","Tension pneumothorax (needle decompression if ALS trained)","Hemothorax","Pericardial tamponade"],correct:1,explanation:"Unequal BS + hypotension + stab wound = tension pneumothorax. Needle decompression 2nd ICS midclavicular line if ALS scope allows.",memory:"Unequal BS + shock + stab = Tension pneumo = EMERGENCY."},
-
     {category:"Diabetes",question:"A diabetic patient is confused and has deep, rapid respirations (Kussmaul). Breath smells fruity. What is this?",answers:["Hypoglycemia","Diabetic ketoacidosis (DKA)","Hyperosmolar crisis","Lactic acidosis"],correct:1,explanation:"Kussmaul respirations + fruity breath + altered LOC = DKA. High-flow oxygen, IV fluids (ALS), rapid transport.",memory:"Fruity breath + deep fast breathing = DKA. Oxygen, transport."},
-
     {category:"Trauma",question:"A 35-year-old has a crush injury to the leg trapped under machinery for 2 hours. The limb is pale, cool, no pedal pulse. What is the concern after extrication?",answers:["Compartment syndrome","Rhabdomyolysis and acute kidney injury from reperfusion","Simple fracture","Heat exhaustion"],correct:1,explanation:"Crush injury = tissue breakdown (rhabdomyolysis) on release. IV fluids (ALS), urine output monitoring, transport to renal-capable hospital.",memory:"Crush > 2 hrs = Rhabdo risk. Fluids critical post-extrication."},
-
     {category:"Obstetrics",question:"A woman at 34 weeks is having contractions every 5 min and feels pressure. You are 45 minutes from hospital and she is beginning to push. What do you do?",answers:["Delay transport","Prepare for delivery en route. Gather clean linens, blankets, suction, bulb syringe. Position her for delivery.","Transport supine, feet elevated","Have her hold urine and stool"],correct:1,explanation:"Imminent delivery = prepare for on-scene or en-route delivery. Sterile field, warm blankets, airway equipment for infant.",memory:"Crowning/pressure = Prepare for delivery NOW."},
-
     {category:"Cardiac",question:"A 48-year-old has chest pain and is found to have HR 130 with NO pulse palpable. You assume cardiac arrest and begin CPR. After 2 minutes, the monitor shows a rhythm. What is most likely?",answers:["Asystole","Pulseless electrical activity (PEA)","VF","Sinus rhythm"],correct:1,explanation:"No pulse + organized rhythm = PEA. Continue CPR, treat reversible causes (e.g., tension pneumo, massive PE, MI). ALS gives epinephrine.",memory:"Organized rhythm + NO PULSE = PEA. Keep CPR going."},
-
     {category:"Pediatric",question:"A 2-year-old has sudden onset of severe abdominal pain, vomiting, and a sausage-shaped abdominal mass. What do you suspect?",answers:["Appendicitis","Intussusception (bowel-in-bowel telescoping)","Gastroenteritis","Hernia"],correct:1,explanation:"Intussusception = classic in toddlers. Sausage mass, severe colicky pain, 'currant jelly' stools. Gentle transport, NPO, ALS.",memory:"Sausage mass + severe pain + toddler = Intussusception."},
-
     {category:"Environmental",question:"A hiker with heat exhaustion is confused, sweating profusely, and has a core temp of 39.5°C. What is your treatment?",answers:["Vigorous cooling at scene","Move to shade, give cool fluids (if alert), remove excess clothes, passive cooling, rapid transport","Wrap in blankets","Give salt tablets"],correct:1,explanation:"Heat exhaustion with altered mental status = move to shade, passive cooling, fluids if alert, monitor, transport.",memory:"Heat exhaustion = Shade, cool, fluids (if alert)."},
-
     {category:"Trauma",question:"A cyclist struck a car. He has a femur fracture (obvious deformity). Pedal pulse is present but weak. What is your immobilization?",answers:["Do not move the leg; leave as is","Gentle alignment (if safe), traction splint, check distal pulse/sensation/motor","Rigid board splint","Elevate the leg immediately"],correct:1,explanation:"Femur fracture = traction splint (applies gentle longitudinal traction). Check neurovascular status before and after. Support alignment.",memory:"Femur = Traction splint. Check pulses before and after."},
-
     {category:"Poisoning",question:"A 40-year-old took unknown pills 1 hour ago. He is alert, HR 130, BP 145/95, dilated pupils. What is suspected?",answers:["Opioid overdose","Stimulant overdose (amphetamine/cocaine)","Depressant overdose","Anticholinergic toxidrome"],correct:1,explanation:"Tachycardia + hypertension + dilated pupils = sympathomimetic (stimulant). Supportive care, cooling if hot, monitor, transport.",memory:"Fast + High BP + Dilated pupils = Cocaine/Meth."},
 ];
 
@@ -536,6 +480,11 @@ function checkAnswer(index) {
     const exp = document.getElementById("explanation");
     exp.style.display = "block";
     exp.innerHTML = `<strong>Explanation:</strong><br>${q.explanation}<div class="memory"><strong>Memory Lock:</strong><br>${q.memory}</div>`;
+    
+    // Scroll explanation into view
+    setTimeout(() => {
+        exp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
 }
 
 function nextQuestion() {
