@@ -4,795 +4,640 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
 <title>NREMT EMT-B Sprint Trainer</title>
-
 <style>
-    *{
-        box-sizing:border-box;
-        -webkit-tap-highlight-color:transparent;
-    }
-
-    body{
-        margin:0;
-        font-family:Arial, Helvetica, sans-serif;
-        background:#101418;
-        color:#f5f5f5;
-        line-height:1.4;
-    }
-
-    header{
-        padding:20px;
-        text-align:center;
-        background:#151c22;
-        border-bottom:2px solid #222;
-        position:sticky;
-        top:0;
-        z-index:100;
-    }
-
-    h1{
-        margin:0;
-        font-size:1.8rem;
-    }
-
-    .sub{
-        opacity:0.8;
-        margin-top:6px;
-        font-size:0.95rem;
-    }
-
-    .controls{
-        display:flex;
-        flex-wrap:wrap;
-        gap:10px;
-        justify-content:center;
-        margin-top:15px;
-    }
-
-    button{
-        border:none;
-        border-radius:10px;
-        padding:12px 16px;
-        background:#2b7cff;
-        color:white;
-        font-size:1rem;
-        font-weight:bold;
-        cursor:pointer;
-        transition:0.2s;
-    }
-
-    button:active{
-        transform:scale(0.98);
-    }
-
-    button.secondary{
-        background:#444;
-    }
-
-    button.danger{
-        background:#b32c2c;
-    }
-
-    main{
-        padding:16px;
-        max-width:900px;
-        margin:auto;
-    }
-
-    .card{
-        background:#171f27;
-        border-radius:16px;
-        padding:18px;
-        margin-bottom:18px;
-        border:1px solid #2b3540;
-        box-shadow:0 4px 12px rgba(0,0,0,0.25);
-    }
-
-    .category{
-        font-size:0.85rem;
-        opacity:0.7;
-        margin-bottom:10px;
-        text-transform:uppercase;
-        letter-spacing:1px;
-    }
-
-    .question{
-        font-size:1.15rem;
-        font-weight:bold;
-        margin-bottom:16px;
-    }
-
-    .answers{
-        display:flex;
-        flex-direction:column;
-        gap:10px;
-    }
-
-    .answer{
-        background:#253240;
-        border:2px solid transparent;
-        border-radius:12px;
-        padding:14px;
-        cursor:pointer;
-        transition:0.2s;
-    }
-
-    .answer.correct{
-        border-color:#00d26a;
-        background:#123a23;
-    }
-
-    .answer.wrong{
-        border-color:#ff4b4b;
-        background:#451919;
-    }
-
-    .answer.disabled{
-        pointer-events:none;
-        opacity:0.9;
-    }
-
-    .explanation{
-        margin-top:16px;
-        padding:14px;
-        border-radius:12px;
-        background:#12181e;
-        display:none;
-    }
-
-    .memory{
-        margin-top:10px;
-        padding:10px;
-        border-left:4px solid #2b7cff;
-        background:#111923;
-    }
-
-    .stats{
-        display:grid;
-        grid-template-columns:repeat(3,1fr);
-        gap:10px;
-        margin-bottom:20px;
-    }
-
-    .stat{
-        background:#171f27;
-        border-radius:14px;
-        padding:16px;
-        text-align:center;
-        border:1px solid #2b3540;
-    }
-
-    .stat-number{
-        font-size:1.5rem;
-        font-weight:bold;
-    }
-
-    .flashcard{
-        min-height:220px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        text-align:center;
-        padding:25px;
-        font-size:1.3rem;
-        font-weight:bold;
-        cursor:pointer;
-        user-select:none;
-    }
-
-    .flash-back{
-        display:none;
-        font-size:1rem;
-        font-weight:normal;
-    }
-
-    .scenario-box{
-        background:#12181e;
-        padding:16px;
-        border-radius:12px;
-        margin-top:12px;
-    }
-
-    .timer{
-        font-size:2rem;
-        text-align:center;
-        margin-top:10px;
-        font-weight:bold;
-    }
-
-    .hidden{
-        display:none;
-    }
-
-    .tips{
-        display:grid;
-        gap:12px;
-    }
-
-    .tip{
-        background:#12181e;
-        padding:14px;
-        border-radius:12px;
-    }
-
-    @media(max-width:700px){
-        .stats{
-            grid-template-columns:1fr;
-        }
-
-        .question{
-            font-size:1rem;
-        }
-    }
+    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    body{ margin:0; font-family:Arial, Helvetica, sans-serif; background:#101418; color:#f5f5f5; line-height:1.4; }
+    header{ padding:20px; text-align:center; background:#151c22; border-bottom:2px solid #222; position:sticky; top:0; z-index:100; }
+    h1{ margin:0; font-size:1.8rem; }
+    .sub{ opacity:0.8; margin-top:6px; font-size:0.95rem; }
+    .controls{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:15px; }
+    button{ border:none; border-radius:10px; padding:12px 16px; background:#2b7cff; color:white; font-size:1rem; font-weight:bold; cursor:pointer; transition:0.2s; }
+    button:active{ transform:scale(0.98); }
+    button:hover{ background:#1e5cb8; }
+    button.secondary{ background:#444; }
+    button.secondary:hover{ background:#555; }
+    button.danger{ background:#b32c2c; }
+    button.danger:hover{ background:#8b2020; }
+    main{ padding:16px; max-width:900px; margin:auto; }
+    .card{ background:#171f27; border-radius:16px; padding:18px; margin-bottom:18px; border:1px solid #2b3540; box-shadow:0 4px 12px rgba(0,0,0,0.25); }
+    .category{ font-size:0.85rem; opacity:0.7; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px; }
+    .question{ font-size:1.15rem; font-weight:bold; margin-bottom:16px; }
+    .answers{ display:flex; flex-direction:column; gap:10px; }
+    .answer{ background:#253240; border:2px solid transparent; border-radius:12px; padding:14px; cursor:pointer; transition:0.2s; }
+    .answer:hover{ border-color:#2b7cff; }
+    .answer.correct{ border-color:#00d26a; background:#123a23; }
+    .answer.wrong{ border-color:#ff4b4b; background:#451919; }
+    .answer.disabled{ pointer-events:none; opacity:0.9; }
+    .explanation{ margin-top:16px; padding:14px; border-radius:12px; background:#12181e; display:none; }
+    .memory{ margin-top:10px; padding:10px; border-left:4px solid #2b7cff; background:#111923; font-size:0.95rem; }
+    .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
+    .stat{ background:#171f27; border-radius:14px; padding:16px; text-align:center; border:1px solid #2b3540; }
+    .stat-number{ font-size:1.5rem; font-weight:bold; color:#2b7cff; }
+    .flashcard{ min-height:240px; display:flex; align-items:center; justify-content:center; text-align:center; padding:25px; font-size:1.3rem; font-weight:bold; cursor:pointer; user-select:none; }
+    .flash-back{ display:none; font-size:1.1rem; font-weight:normal; }
+    .scenario-box{ background:#12181e; padding:16px; border-radius:12px; margin-top:12px; margin-bottom:12px; }
+    .scenario-answer{ background:#1a2634; padding:16px; border-radius:12px; margin-top:12px; border-left:4px solid #00d26a; }
+    .hidden{ display:none; }
+    .tip{ background:#1a2634; padding:14px; border-radius:10px; border-left:4px solid #2b7cff; }
+    .tip strong{ color:#2b7cff; }
+    .cram-grid{ display:grid; gap:12px; }
+    .nav-buttons{ display:flex; gap:10px; flex-wrap:wrap; margin-top:15px; }
+    .progress-bar{ width:100%; height:8px; background:#253240; border-radius:4px; margin:10px 0; overflow:hidden; }
+    .progress-fill{ height:100%; background:#2b7cff; transition:width 0.3s; }
+    h2{ margin-top:0; color:#2b7cff; }
+    h3{ color:#2b7cff; margin-top:16px; margin-bottom:8px; }
+    .table-sim{ width:100%; border-collapse:collapse; margin:12px 0; font-size:0.95rem; }
+    .table-sim th{ background:#1a2634; padding:10px; text-align:left; border-bottom:2px solid #2b3540; }
+    .table-sim td{ padding:10px; border-bottom:1px solid #2b3540; }
+    .vital-normal{ color:#00d26a; }
+    .vital-abnormal{ color:#ff9800; }
+    .vital-critical{ color:#ff4b4b; }
+    .drug-card{ background:#1a2634; padding:12px; border-radius:8px; margin:8px 0; border-left:4px solid #ff9800; }
+    .drug-card strong{ color:#ff9800; }
+    @media(max-width:700px){ .stats{ grid-template-columns:1fr; } .question{ font-size:1rem; } .nav-buttons{ flex-direction:column; } button{ width:100%; } }
 </style>
 </head>
-
 <body>
 
 <header>
-    <h1>NREMT EMT-B Sprint Trainer</h1>
-    <div class="sub">
-        Train your brain for National Registry pattern recognition
-    </div>
-
+    <h1>🚑 NREMT EMT-B Sprint Trainer</h1>
+    <div class="sub">50+ High-Yield Questions • National Registry Style</div>
     <div class="controls">
-        <button onclick="showSection('quizSection')">Quiz Mode</button>
-        <button onclick="showSection('flashSection')" class="secondary">Flashcards</button>
-        <button onclick="showSection('scenarioSection')" class="secondary">Scenarios</button>
-        <button onclick="showSection('cramSection')" class="secondary">Cram Sheet</button>
+        <button onclick="showSection('quizSection')">📝 Quiz</button>
+        <button onclick="showSection('flashSection')" class="secondary">🔖 Flashcards</button>
+        <button onclick="showSection('scenarioSection')" class="secondary">🚨 Scenarios</button>
+        <button onclick="showSection('cramSection')" class="secondary">⚡ Cram Sheet</button>
+        <button onclick="showSection('drugsSection')" class="secondary">💊 Drugs & Doses</button>
     </div>
 </header>
 
 <main>
-
-<div class="stats">
-    <div class="stat">
-        <div class="stat-number" id="score">0</div>
-        <div>Correct</div>
+    <div class="stats">
+        <div class="stat"><div class="stat-number" id="score">0</div><div>Correct</div></div>
+        <div class="stat"><div class="stat-number" id="total">0</div><div>Questions</div></div>
+        <div class="stat"><div class="stat-number" id="percent">0%</div><div>Accuracy</div></div>
     </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
 
-    <div class="stat">
-        <div class="stat-number" id="total">0</div>
-        <div>Questions</div>
-    </div>
-
-    <div class="stat">
-        <div class="stat-number" id="percent">0%</div>
-        <div>Accuracy</div>
-    </div>
-</div>
-
-<!-- QUIZ SECTION -->
-
-<section id="quizSection">
-
-    <div class="card">
-
-        <div class="category" id="category"></div>
-
-        <div class="question" id="question"></div>
-
-        <div class="answers" id="answers"></div>
-
-        <div class="explanation" id="explanation"></div>
-
-    </div>
-
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <button onclick="nextQuestion()">Next Question</button>
-        <button onclick="shuffleQuestions()" class="secondary">Shuffle</button>
-        <button onclick="resetStats()" class="danger">Reset Stats</button>
-    </div>
-
-</section>
-
-<!-- FLASHCARD SECTION -->
-
-<section id="flashSection" class="hidden">
-
-    <div class="card flashcard" onclick="flipFlashcard()">
-
-        <div id="flashFront"></div>
-
-        <div class="flash-back" id="flashBack"></div>
-
-    </div>
-
-    <div style="display:flex; gap:10px;">
-        <button onclick="nextFlashcard()">Next Flashcard</button>
-    </div>
-
-</section>
-
-<!-- SCENARIO SECTION -->
-
-<section id="scenarioSection" class="hidden">
-
-    <div class="card">
-
-        <h2>Rapid Scenario Trainer</h2>
-
-        <div class="scenario-box" id="scenarioText"></div>
-
-        <div class="memory" id="scenarioAnswer"></div>
-
-    </div>
-
-    <button onclick="nextScenario()">Next Scenario</button>
-
-</section>
-
-<!-- CRAM SECTION -->
-
-<section id="cramSection" class="hidden">
-
-    <div class="card">
-        <h2>Ultra High-Yield Cram Sheet</h2>
-
-        <div class="tips">
-
-            <div class="tip">
-                <strong>Airway > Breathing > Circulation</strong><br>
-                Most questions are solved by identifying what kills first.
-            </div>
-
-            <div class="tip">
-                <strong>Blue + tired = ventilate</strong><br>
-                If respirations are inadequate, use BVM.
-            </div>
-
-            <div class="tip">
-                <strong>Cool clammy = shocky</strong><br>
-                Early shock = tachycardia, pale, cool, anxious.
-            </div>
-
-            <div class="tip">
-                <strong>Kids crash from respiratory failure first.</strong>
-            </div>
-
-            <div class="tip">
-                <strong>Unstable patient?</strong><br>
-                Treat immediate life threats and transport.
-            </div>
-
-            <div class="tip">
-                <strong>OPA</strong> = unconscious/no gag.<br>
-                <strong>NPA</strong> = gag reflex present.
-            </div>
-
-            <div class="tip">
-                <strong>Stroke:</strong> determine LAST KNOWN WELL.
-            </div>
-
-            <div class="tip">
-                <strong>Anaphylaxis:</strong> airway swelling + wheezing + hypotension = epinephrine.
-            </div>
-
-            <div class="tip">
-                <strong>Chest trauma:</strong><br>
-                Absent lung sounds + hypotension + JVD = tension pneumo.
-            </div>
-
-            <div class="tip">
-                <strong>NREMT Rule:</strong><br>
-                Do not get distracted by dramatic injuries.
-            </div>
-
+    <!-- QUIZ SECTION -->
+    <section id="quizSection">
+        <div class="card">
+            <div class="category" id="category"></div>
+            <div class="question" id="question"></div>
+            <div class="answers" id="answers"></div>
+            <div class="explanation" id="explanation"></div>
         </div>
+        <div class="nav-buttons">
+            <button onclick="prevQuestion()" class="secondary">← Previous</button>
+            <button onclick="nextQuestion()">Next →</button>
+            <button onclick="shuffleQuestions()" class="secondary">🔀 Shuffle</button>
+            <button onclick="resetStats()" class="danger">🔄 Reset</button>
+        </div>
+    </section>
 
-    </div>
+    <!-- FLASHCARD SECTION -->
+    <section id="flashSection" class="hidden">
+        <div class="card flashcard" onclick="flipFlashcard()">
+            <div id="flashFront"></div>
+            <div class="flash-back" id="flashBack"></div>
+        </div>
+        <div style="text-align:center; margin:12px 0; opacity:0.7;" id="flashCounter"></div>
+        <div class="nav-buttons">
+            <button onclick="prevFlashcard()" class="secondary">← Prev</button>
+            <button onclick="nextFlashcard()">Next →</button>
+            <button onclick="shuffleFlashcards()" class="secondary">🔀 Shuffle</button>
+        </div>
+    </section>
 
-</section>
+    <!-- SCENARIO SECTION -->
+    <section id="scenarioSection" class="hidden">
+        <div class="card">
+            <h2>🚨 Rapid Scenario Trainer</h2>
+            <div class="scenario-box" id="scenarioText"></div>
+            <div class="scenario-answer" id="scenarioAnswer"></div>
+        </div>
+        <div class="nav-buttons">
+            <button onclick="prevScenario()" class="secondary">← Previous</button>
+            <button onclick="nextScenario()">Next →</button>
+        </div>
+    </section>
 
+    <!-- CRAM SECTION -->
+    <section id="cramSection" class="hidden">
+        <div class="card">
+            <h2>⚡ Ultra High-Yield Cram Sheet</h2>
+            <div class="cram-grid">
+                <div class="tip"><strong>RULE #1: Airway > Breathing > Circulation</strong><br>Most NREMT questions are solved by identifying what kills first.</div>
+                <div class="tip"><strong>Blue + Tired = Ventilate</strong><br>If respirations are inadequate or slow, use BVM immediately. Do NOT give high-flow O₂ to someone who isn't moving air.</div>
+                <div class="tip"><strong>Cool Clammy = Shocky</strong><br>Early shock = tachycardia, pale, cool, anxious. Treat with oxygen, position, fluids (if ALS/transport available).</div>
+                <div class="tip"><strong>Kids Crash from Respiratory First</strong><br>Children decompensate rapidly from airway/breathing problems. Adults from circulation.</div>
+            </div>
+
+            <h3>ABC Priorities by Patient Type</h3>
+            <div class="cram-grid">
+                <div class="tip"><strong>Trauma:</strong> Airway first (with C-spine). Control bleeding. Rapid transport.</div>
+                <div class="tip"><strong>Medical:</strong> Airway, then O₂. Get history. Identify and treat reversible causes.</div>
+                <div class="tip"><strong>Respiratory Distress:</strong> High-flow O₂ first. Sit up. Listen. Transport.</div>
+                <div class="tip"><strong>Chest Pain:</strong> Oxygen, aspirin (if alert), position of comfort. Monitor. Rapid transport.</div>
+            </div>
+
+            <h3>Red Flag Findings = Rapid Transport</h3>
+            <div class="cram-grid">
+                <div class="tip">📍 Tension pneumothorax (absent BS + JVD + hypotension)</div>
+                <div class="tip">📍 Flail chest with respiratory compromise</div>
+                <div class="tip">📍 Open pneumothorax (seal 3 sides)</div>
+                <div class="tip">📍 Uncontrolled bleeding</div>
+                <div class="tip">📍 Shock (hypotension + altered mental status)</div>
+                <div class="tip">📍 Altered LOC (stroke, head injury, intoxication)</div>
+            </div>
+
+            <h3>Shock Recognition & Treatment</h3>
+            <table class="table-sim">
+                <tr><th>Shock Type</th><th>Signs</th><th>Treatment</th></tr>
+                <tr><td><strong>Hypovolemic</strong></td><td>Pale, cool, weak pulse, ↑HR</td><td>O₂, position, fluids (ALS), rapid transport</td></tr>
+                <tr><td><strong>Anaphylaxis</strong></td><td>Hives, wheezing, facial swelling, hypotension</td><td>Epinephrine IM, O₂, IV (ALS), position</td></tr>
+                <tr><td><strong>Tension Pneumo</strong></td><td>Absent BS, JVD, hypotension, distress</td><td>Needle decompression (if ALS trained)</td></tr>
+                <tr><td><strong>Sepsis</strong></td><td>Fever, tachycardia, hypotension, altered LOC</td><td>O₂, fluids (ALS), rapid transport</td></tr>
+            </table>
+
+            <h3>Airway Devices Quick Reference</h3>
+            <div class="cram-grid">
+                <div class="tip"><strong>OPA (Oropharyngeal):</strong> Unconscious + no gag reflex. Measure angle of jaw to teeth.</div>
+                <div class="tip"><strong>NPA (Nasopharyngeal):</strong> Gag reflex present. Avoid with basilar skull fracture (CSF).</div>
+                <div class="tip"><strong>BVM:</strong> Slow/shallow breathing. Seal + ventilate at 500–600 mL, 10–12/min (adults). Be aggressive.</div>
+                <div class="tip"><strong>Suction:</strong> Tonsillar catheter for pooled secretions. Yankauer for suctioning mouth.</div>
+            </div>
+
+            <h3>Stroke Recognition (FAST)</h3>
+            <div class="tip"><strong>F</strong>ace drooping | <strong>A</strong>rm drifting | <strong>S</strong>peech slurred | <strong>T</strong>ime to EMS
+            <br><strong>Key:</strong> Last known well time = reperfusion window. Note the time.</div>
+
+            <h3>Hypoglycemia vs. Hyperglycemia</h3>
+            <table class="table-sim">
+                <tr><th>Feature</th><th>Hypoglycemia</th><th>Hyperglycemia</th></tr>
+                <tr><td><strong>Onset</strong></td><td>Sudden</td><td>Gradual</td></tr>
+                <tr><td><strong>Skin</strong></td><td>Cool, clammy</td><td>Warm, dry</td></tr>
+                <tr><td><strong>Breathing</strong></td><td>Normal</td><td>Deep/rapid (Kussmaul)</td></tr>
+                <tr><td><strong>Treatment</strong></td><td>Oral glucose (if alert)</td><td>None (insulin at hospital)</td></tr>
+            </table>
+
+            <h3>Seizure Management</h3>
+            <div class="cram-grid">
+                <div class="tip"><strong>During:</strong> Protect from injury. Do NOT restrain. Turn head to side if possible. Time the seizure.</div>
+                <div class="tip"><strong>After:</strong> Recovery position. Oxygen. Reassure. Transport. Do NOT give anything by mouth.</div>
+                <div class="tip"><strong>Recurrent (status epilepticus):</strong> High-flow O₂. Rapid transport. Call ALS early.</div>
+            </div>
+
+            <h3>Chest Pain Rule-Out</h3>
+            <div class="cram-grid">
+                <div class="tip">💊 Aspirin (if alert, no allergy, not asthmatic)</div>
+                <div class="tip">🫁 High-flow O₂</div>
+                <div class="tip">💨 Position of comfort (usually sitting)</div>
+                <div class="tip">📋 Get EKG (ALS)</div>
+                <div class="tip">🚗 Transport to facility with cath lab if STEMI suspected</div>
+            </div>
+
+            <h3>Trauma Golden Hour Priorities</h3>
+            <div class="cram-grid">
+                <div class="tip"><strong>Scene Safety</strong> → BSI → <strong>Primary Survey</strong> (ABCs) → <strong>Secondary Survey</strong> (rapid head-to-toe)</div>
+                <div class="tip"><strong>C-spine:</strong> Immobilize if mechanism suggests injury (MOI). Maintain in-line stabilization.</div>
+                <div class="tip"><strong>Rapid Extrication:</strong> If trapped, use minimal handling. Spine precautions override comfort.</div>
+                <div class="tip"><strong>Load & Go:</strong> Critical trauma = <strong>on-scene time ≤10 min</strong>. Transport first, treat en route.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DRUGS & DOSES SECTION -->
+    <section id="drugsSection" class="hidden">
+        <div class="card">
+            <h2>💊 Drugs & Doses (EMT-B Scope)</h2>
+            
+            <h3>Medications EMT-B Can Administer</h3>
+            <div class="drug-card">
+                <strong>Oxygen (O₂)</strong><br>
+                <strong>Dose:</strong> Variable (10–15 L/min non-rebreather for hypoxia)<br>
+                <strong>Use:</strong> Hypoxia, respiratory distress, chest pain, suspected shock
+            </div>
+            <div class="drug-card">
+                <strong>Aspirin</strong><br>
+                <strong>Dose:</strong> 325 mg (2 tablets of 81 mg, or 1 × 325 mg, depending on state)<br>
+                <strong>Indications:</strong> Chest pain, alert, no allergy, not asthmatic<br>
+                <strong>Contraindications:</strong> Allergy, asthma, GI bleed history
+            </div>
+            <div class="drug-card">
+                <strong>Oral Glucose</strong><br>
+                <strong>Dose:</strong> 15 g (1 tube, e.g., Insta-Glucose)<br>
+                <strong>Use:</strong> Hypoglycemia (altered LOC, alert enough to swallow, blood glucose <70 if available)<br>
+                <strong>RULE:</strong> Alert patient only. If no improvement in 10 min, transport.
+            </div>
+            <div class="drug-card">
+                <strong>Activated Charcoal (per state protocol)</strong><br>
+                <strong>Dose:</strong> 25–50 g PO<br>
+                <strong>Use:</strong> Recent ingestion (alert, gag reflex)<br>
+                <strong>RULE:</strong> Only if poison control or ALS directs.
+            </div>
+            <div class="drug-card">
+                <strong>Epinephrine Auto-Injector (if carrier or bystander supplies)</strong><br>
+                <strong>Dose:</strong> 0.3 mg IM (adult), 0.15 mg IM (child &lt;25 kg)<br>
+                <strong>Use:</strong> Anaphylaxis (wheezing, hives, facial swelling, hypotension)<br>
+                <strong>RULE:</strong> Thigh IM. Massage site 10 sec. Repeat every 5–15 min if no improvement.
+            </div>
+            <div class="drug-card">
+                <strong>Nitroglycerin (if carrier has prescribed supply)</strong><br>
+                <strong>Dose:</strong> 0.3–0.6 mg sublingual<br>
+                <strong>Use:</strong> Chest pain (alert, systolic BP &gt; 90, HR &lt; 100, approved per protocol)<br>
+                <strong>Precautions:</strong> Do NOT give if on Viagra/similar (severe hypotension).
+            </div>
+
+            <h3>Medications ALS May Administer (Know for Test)</h3>
+            <div class="drug-card">
+                <strong>Epinephrine IV (Cardiac Arrest)</strong><br>
+                <strong>Dose:</strong> 1 mg IV push every 3–5 min
+            </div>
+            <div class="drug-card">
+                <strong>Amiodarone (VF/Pulseless VT)</strong><br>
+                <strong>Dose:</strong> 300 mg IV, then 150 mg
+            </div>
+            <div class="drug-card">
+                <strong>Sodium Bicarbonate (Severe Metabolic Acidosis)</strong><br>
+                <strong>Dose:</strong> 1 mEq/kg IV
+            </div>
+            <div class="drug-card">
+                <strong>Atropine (Bradycardia)</strong><br>
+                <strong>Dose:</strong> 0.5–1 mg IV, repeat every 3–5 min (max 3 mg)
+            </div>
+
+            <h3>Drug Administration Routes (Know Them!)</h3>
+            <table class="table-sim">
+                <tr><th>Route</th><th>Example</th><th>Speed</th></tr>
+                <tr><td><strong>IV</strong></td><td>Epinephrine, amiodarone</td><td>Fastest</td></tr>
+                <tr><td><strong>IM</strong></td><td>Epinephrine (epi-pen)</td><td>Fast (5–10 min)</td></tr>
+                <tr><td><strong>IO</strong></td><td>Cardiac arrest (peds/adult)</td><td>Fast as IV</td></tr>
+                <tr><td><strong>PO (oral)</strong></td><td>Oral glucose, aspirin, charcoal</td><td>Slowest (10–20 min)</td></tr>
+                <tr><td><strong>Sublingual</strong></td><td>Nitroglycerin</td><td>Fast (3–5 min)</td></tr>
+                <tr><td><strong>Inhalation</strong></td><td>Albuterol, nitrous oxide</td><td>Moderate</td></tr>
+            </table>
+
+            <h3>Doses by Weight (Pediatric)</h3>
+            <div class="cram-grid">
+                <div class="tip"><strong>Epinephrine IM:</strong> 0.01 mg/kg (0.3 mg ≈ 30 kg, 0.15 mg ≈ 15 kg)</div>
+                <div class="tip"><strong>Oral Glucose:</strong> 5–10 g for small children (depends on product)</div>
+                <div class="tip"><strong>CPR Rate:</strong> 100–120 compressions/min (same as adults)</div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <script>
-
+// ==================== 50+ QUESTIONS ====================
 const questions = [
+    {category:"Airway",question:"A 45-year-old male is unresponsive with snoring respirations. His gag reflex is absent. What is your first intervention?",answers:["Apply high-flow oxygen","Insert an oropharyngeal airway","Perform needle cricothyrotomy","Insert a nasopharyngeal airway"],correct:1,explanation:"An oropharyngeal (OPA) airway is indicated for an unresponsive patient with no gag reflex. This maintains airway patency.",memory:"OPA = unconscious + NO gag reflex. NPA = gag reflex present."},
 
-{
-category:"Airway",
-question:"An unconscious trauma patient has snoring respirations. What should you do FIRST?",
-answers:[
-"Apply traction splint",
-"Insert OPA and assist ventilations",
-"Obtain SAMPLE history",
-"Check blood glucose"
-],
-correct:1,
-explanation:"Snoring respirations indicate airway obstruction. Airway always comes first.",
-memory:"Snoring = airway obstruction until proven otherwise."
-},
+    {category:"Breathing",question:"You arrive at a 68-year-old with respiratory rate of 8/min and shallow depth. What do you do?",answers:["Provide high-flow oxygen only","Begin BVM ventilation at 10–12 breaths/min","Wait for ALS to intubate","Place patient in Fowler's position"],correct:1,explanation:"Inadequate respirations (slow + shallow) require immediate BVM ventilation. Do not delay.",memory:"Slow/shallow breathing = BVM NOW. 500–600 mL per breath, 10–12/min."},
 
-{
-category:"Respiratory",
-question:"A patient is breathing 6 times per minute with shallow respirations. What is MOST appropriate?",
-answers:[
-"Nonrebreather mask",
-"BVM ventilations",
-"CPAP",
-"Nothing if pulse ox is normal"
-],
-correct:1,
-explanation:"Slow shallow respirations = inadequate ventilation = BVM.",
-memory:"Bad breathing = bagging."
-},
+    {category:"Circulation",question:"A trauma patient has pale, cool, clammy skin; heart rate 130; and weak pulses. Blood pressure is 88/60. What is this?",answers:["Stable shock","Hypovolemic shock","Anaphylaxis","Septic shock"],correct:1,explanation:"Pale, cool, clammy + tachycardia + hypotension = hypovolemic shock. Treat with oxygen, position, fluids (ALS), rapid transport.",memory:"Cool, clammy, fast pulse, low BP = hypovolemic shock. Think BLEEDING."},
 
-{
-category:"Shock",
-question:"Which finding is an EARLY sign of shock?",
-answers:[
-"Hypotension",
-"Bradycardia",
-"Warm dry skin",
-"Tachycardia"
-],
-correct:3,
-explanation:"Tachycardia is an early compensatory sign.",
-memory:"Shock starts fast before pressure drops."
-},
+    {category:"Shock",question:"A 22-year-old female is found unresponsive after possible bee sting. She has urticaria (hives), wheezing, and facial edema. BP 80/50. What do you do FIRST?",answers:["Give oral glucose","Administer epinephrine IM if available","Provide high-flow oxygen","Transport supine"],correct:1,explanation:"Anaphylaxis with hypotension requires immediate epinephrine IM (0.3 mg adult). Follow with oxygen and rapid transport.",memory:"Anaphylaxis = Epi-pen IM. Hives + wheezing + swelling = SEVERE. Don't wait."},
 
-{
-category:"Cardiology",
-question:"A patient with chest pain took sildenafil earlier. What should you avoid?",
-answers:[
-"Aspirin",
-"Oxygen",
-"Nitroglycerin",
-"Rapid transport"
-],
-correct:2,
-explanation:"Nitro combined with ED meds can dangerously drop BP.",
-memory:"ED meds + nitro = pressure crash."
-},
+    {category:"Stroke",question:"A 67-year-old has sudden onset facial drooping, arm drift, and slurred speech. You note the time is 1400. What is most critical?",answers:["Perform a full neuro exam","Document last known well time","Check glucose immediately","Administer aspirin"],correct:1,explanation:"Stroke care hinges on time. Last known well determines if thrombolytics are an option (IV-tPA window ~4.5 hr). Document it.",memory:"FAST + TIME = Stroke saves lives. Note when he was last normal."},
 
-{
-category:"Pediatrics",
-question:"Most pediatric cardiac arrests are caused by:",
-answers:[
-"Heart disease",
-"Respiratory failure",
-"Stroke",
-"Drug overdose"
-],
-correct:1,
-explanation:"Kids usually arrest from respiratory compromise first.",
-memory:"Kids crash from breathing."
-},
+    {category:"Diabetes",question:"A 34-year-old diabetic is confused, diaphoretic, and trembling. You suspect hypoglycemia. Glucometer reads 55 mg/dL. What do you do?",answers:["Give 1 amp of D50 IV","Administer 15 g of oral glucose","Transport without intervention","Give insulin"],correct:1,explanation:"Alert patient with low glucose = oral glucose (15 g). If no improvement in 10 min or altered LOC, transport for IV D50 (ALS).",memory:"Hypoglycemia + ALERT = Glucose by mouth. Hyperglycemia = nothing (insulin at hospital)."},
 
-{
-category:"Trauma",
-question:"A patient has an obvious open femur fracture and respirations of 8/min. Priority?",
-answers:[
-"Splint the leg",
-"Control bleeding",
-"Assist ventilations",
-"Apply traction"
-],
-correct:2,
-explanation:"Airway and breathing come before orthopedic injuries.",
-memory:"Breathing beats broken bones."
-},
+    {category:"Seizure",question:"A patient is actively seizing. You are alone. What do you do?",answers:["Restrain the patient's limbs","Call for ALS, protect from injury, position head to side","Place a bite block in the mouth","Give aspirin"],correct:1,explanation:"During seizure: protect from injury, note duration, turn head to side if safe, call for help. Do NOT restrain or use bite block.",memory:"Seizure = Protect, Time, Don't restrain, Transport."},
 
-{
-category:"Neurology",
-question:"Most important information for suspected stroke?",
-answers:[
-"Insurance provider",
-"Last known well time",
-"Past surgeries",
-"Weight"
-],
-correct:1,
-explanation:"Stroke treatment depends heavily on time.",
-memory:"Time = brain."
-},
+    {category:"Trauma",question:"A 42-year-old struck by a car has absent breath sounds on the right, tracheal deviation, and hypotension. What do you suspect?",answers:["Pneumonia","Tension pneumothorax","Hemopneumothorax","Rib fracture"],correct:1,explanation:"Absent BS + tracheal deviation + hypotension = tension pneumothorax. This is a LOAD-AND-GO. ALS may do needle decompression.",memory:"Trachea pointing away = Tension pneumo = EMERGENCY."},
 
-{
-category:"Diabetic",
-question:"A diabetic patient is confused, sweaty, and can swallow. Best intervention?",
-answers:[
-"Oral glucose",
-"Insulin",
-"BVM",
-"Nitroglycerin"
-],
-correct:0,
-explanation:"Classic hypoglycemia with intact swallowing.",
-memory:"Cold + confused + diabetic = sugar."
-},
+    {category:"Chest Injury",question:"A 55-year-old has a penetrating chest wound. Blood is welling from the opening with each breath. What is this called?",answers:["Pneumothorax","Hemothorax","Sucking chest wound","Flail chest"],correct:2,explanation:"Sucking chest wound = air entering the pleural space. Treatment: seal with occlusive dressing (3 sides in some protocols).",memory:"Sucking wound = Air in = Seal it."},
 
-{
-category:"OB",
-question:"Which finding indicates imminent childbirth?",
-answers:[
-"Contractions every 15 minutes",
-"Crowning",
-"Back pain",
-"First trimester bleeding"
-],
-correct:1,
-explanation:"Crowning means delivery is imminent.",
-memory:"If you see the head, baby is coming."
-},
+    {category:"Bleeding",question:"An 18-year-old has severe arterial bleeding from the thigh. Direct pressure is not slowing it. What do you do?",answers:["Apply cold compress","Apply a tourniquet above the wound","Elevate the leg","Give oral glucose"],correct:1,explanation:"Arterial bleeding not controlled by direct pressure = tourniquet. Place 2–3 inches above the wound, tighten until bleeding stops.",memory:"Arterial = Dark red, spurting. Tourniquet if direct pressure fails."},
 
-{
-category:"Medical",
-question:"A patient with wheezing, facial swelling, and hypotension is MOST likely experiencing:",
-answers:[
-"Asthma",
-"CHF",
-"Anaphylaxis",
-"Pneumonia"
-],
-correct:2,
-explanation:"Airway swelling plus shock = anaphylaxis.",
-memory:"Wheeze + swelling + shock = epi."
-}
+    {category:"Airway",question:"You have a patient with a basilar skull fracture (Battle's sign, raccoon eyes). Which airway device is CONTRAINDICATED?",answers:["Oropharyngeal airway","Nasopharyngeal airway","Bag-valve-mask","Suction catheter"],correct:1,explanation:"Nasopharyngeal airway is contraindicated in basilar skull fracture due to risk of intracranial placement (CSF).",memory:"Basilar skull fracture = NO NPA. OPA only."},
 
+    {category:"Breathing",question:"An asthmatic 14-year-old is wheezing, using accessory muscles, and speaking only 1–2 words. What is the priority?",answers:["Transport supine","High-flow oxygen, position up, rapid transport","Give oral glucose","Perform CPR"],correct:1,explanation:"Respiratory distress with poor air movement = high-flow O₂, upright position, rapid transport to facility with albuterol.",memory:"Accessory muscles + 1-word dyspnea = SEVERE asthma."},
+
+    {category:"Cardiac",question:"A 68-year-old is found unresponsive, pulseless, apneic. EMS is 8 minutes away. What do you do?",answers:["Wait for ALS","Begin CPR immediately at 100–120 compressions/min","Give rescue breaths only","Transport supine without intervention"],correct:1,explanation:"Pulseless, apneic = cardiac arrest. Begin CPR at 100–120 compressions/min. Push hard, push fast. Do not delay.",memory:"No pulse = CPR NOW."},
+
+    {category:"Pediatric",question:"A 3-year-old is in severe respiratory distress with stridor and fever. You suspect epiglottitis. What do you do?",answers:["Force the child to lie flat","Keep child calm, do NOT agitate, sit upright, prepare for airway emergency, rapid transport","Perform blind finger sweep","Give oxygen mask firmly"],correct:1,explanation:"Epiglottitis is an airway emergency. Keep child calm, allow position of comfort, prepare for loss of airway, rapid transport.",memory:"Epiglottitis = Stridor + Fever + Drooling = Do NOT agitate. Transport fast."},
+
+    {category:"Obstetrics",question:"A pregnant woman at 7 months is in shock with vaginal bleeding. What is the mechanism?",answers:["Labor onset","Placenta previa","Abruptio placentae","Normal spotting"],correct:2,explanation:"Shock + vaginal bleeding in 3rd trimester = abruptio placentae (placental abruption). Treat shock, rapid transport.",memory:"Pregnant + bleeding + shock = Abruption. RIP (rapid)"},
+
+    {category:"Obstetrics",question:"A woman is crowning during labor. What should you do?",answers:["Push harder for her","Prepare for delivery, support the head as it crowns, gentle traction","Attempt to delay delivery","Cut the umbilical cord"],correct:1,explanation:"Crowning = imminent delivery. Do NOT hold back. Support head, let gravity help. If cord around neck, slip it off. Dry infant.",memory:"Crown visible = Baby coming. Support = Don't hold back."},
+
+    {category:"Burns",question:"A 45-year-old has thermal burns to both legs and torso (40% TBSA). What is the priority fluid?",answers:["Dextrose 5% in water","Normal saline or Lactated Ringer's (ALS)","Whole blood","Oral hydration"],correct:1,explanation:"Major burn = crystalloid (normal saline/LR) IV fluids (ALS). EMT-B: O₂, remove from heat, cover with clean dry cloth, rapid transport.",memory:"Burns >15% = Fluid resuscitation needed. Cool the burn."},
+
+    {category:"Poisoning",question:"A 6-year-old ingested an unknown substance 20 minutes ago. The child is alert with normal vitals. What do you do?",answers:["Give activated charcoal immediately","Contact poison control, transport","Do nothing, observe at home","Induce vomiting"],correct:1,explanation:"Unknown ingestion in alert patient = contact poison control (1-800-222-1222 in US) and transport. Do NOT induce vomiting.",memory:"Poisoning = Poison Control + Transport. NO vomit induction."},
+
+    {category:"Trauma",question:"A pedestrian is struck by a car. You suspect head injury. What is your approach?",answers:["Place in recovery position","Maintain spine precautions, high-flow O₂, monitor LOC, rapid transport","Elevate the head 30 degrees","Apply ice to head"],correct:1,explanation:"Suspected head injury = maintain C-spine immobilization, oxygen, monitor mental status, rapid transport.",memory:"Head injury = Spine precautions, O₂, watch LOC, TRANSPORT."},
+
+    {category:"Musculoskeletal",question:"A 40-year-old has a deformed, swollen lower leg after a fall. Pedal pulse is weak. What do you do?",answers:["Splint in the deformed position","Align limb gently, splint, check distal pulse/sensation/motor","Elevate and ice","Apply a tourniquet"],correct:1,explanation:"Deformity with weak pulse = possible arterial compromise. Gentle alignment, splint, reassess circulation. If no improvement, immobilize and transport rapidly.",memory:"Weak pulse + deformity = Align, splint, re-check pulse."},
+
+    {category:"Environmental",question:"A hypothermic patient is found unresponsive in icy water. Core temp ~30°C. No pulse felt after 10 seconds. What is your action?",answers:["Declare death at scene","Begin CPR gently, transport WITHOUT stopping CPR","Vigorous rewarming at scene","Assume rigor mortis is present"],correct:1,explanation:"Hypothermic arrest = cold and dead. Gentle CPR, warm passively en route, transport (may resuscitate after rewarming). Don't give up.",memory:"Hypothermia = Gentle CPR. 'Not dead until warm and dead.'"},
+
+    {category:"Toxicology",question:"A 55-year-old has pinpoint pupils, slow respirations (6/min), and is unresponsive. You suspect opioid overdose. What do you do?",answers:["Give naloxone (Narcan) IM/IN if available","BVM ventilation, rapid transport","Apply tourniquet","Do nothing, let ALS handle it"],correct:0,explanation:"Opioid overdose (pinpoint pupils, respiratory depression) = naloxone 0.4–2.4 mg IV/IM/IN (if EMT-B scope allows). Also provide BVM ventilation.",memory:"Pinpoint pupils + no breathing = OPIOID = Narcan + BVM."},
+
+    {category:"Cardiac",question:"A 52-year-old complains of chest pressure radiating to the jaw and left arm. BP 110/70, HR 88. What is most important?",answers:["Reassure and observe at home","Aspirin (if not contraindicated), oxygen, position of comfort, rapid transport","Perform CPR","Give nitroglycerin without asking for current medications"],correct:1,explanation:"Chest pain radiating to jaw/arm + stable vitals = possible ACS. Aspirin (if alert, no allergy/asthma), O₂, comfort, rapid transport.",memory:"Chest pain = Aspirin + O₂ + Transport (not home)."},
+
+    {category:"Respiratory",question:"A COPD patient is on home oxygen at 2 L/min and is now short of breath. What is the concern with high-flow O₂?",answers:["High-flow O₂ causes combustion","High O₂ may suppress respiratory drive in some COPD patients","O₂ is always safe","High-flow O₂ causes seizures"],correct:1,explanation:"Some COPD patients rely on hypoxia to drive breathing (hypoxic drive). However, NEVER withhold O₂ if hypoxic. Monitor closely.",memory:"COPD + O₂ = Watch LOC/RR but give O₂ if SpO2 <90%."},
+
+    {category:"Pediatric",question:"An 8-month-old has barky cough, stridor, and respiratory distress. Parents say onset was sudden last night. What is this?",answers:["Epiglottitis","Croup (laryngotracheobronchitis)","Asthma","Pneumonia"],correct:1,explanation:"Barky cough + stridor in infant = croup. Usually viral, self-limited. Supportive care: mist, cool air, oxygen if hypoxic.",memory:"Barky cough + infant = Croup. Cool mist helps."},
+
+    {category:"Trauma",question:"A 30-year-old has a penetrating abdominal wound with bowel protruding. What is your action?",answers:["Push bowel back in","Do NOT touch bowel. Cover with moist sterile dressing. Position knees bent (comfort). Rapid transport.","Elevate the abdomen","Apply pressure to stop bleeding"],correct:1,explanation:"Evisceration = do NOT reinsert bowel. Cover with clean moist dressing, keep warm, transport rapidly.",memory:"Guts out = Don't push back. Moist sterile cover. TRANSPORT."},
+
+    {category:"Cardiac",question:"You find a 72-year-old in VF (verified on defibrillator). AED is at scene. What do you do?",answers:["Apply AED and shock","Perform 2 minutes of CPR first, then shock","Wait for ALS to shock","Transport supine without intervention"],correct:0,explanation:"VF = shockable rhythm. Apply AED and shock ASAP. Minimize delay. Perform CPR between shocks per AED prompts.",memory:"VF = SHOCK FIRST (or CPR if delay >few sec)."},
+
+    {category:"Drowning",question:"A 5-year-old is pulled from the pool, unresponsive, cyanotic. What is your priority?",answers:["Position in recovery position","High-flow oxygen, BVM if apneic, rapid transport to hospital","Perform Heimlich maneuver","Drain water from lungs"],correct:1,explanation:"Near-drowning = airway, breathing (BVM), rapid transport. Secondary drowning can occur hours later due to aspiration.",memory:"Drowning = O₂, BVM, Transport. Aspiration is delayed danger."},
+
+    {category:"Allergic Reaction",question:"A 28-year-old has facial swelling, itching, and mild wheezing 5 minutes after eating shellfish. Pulse 100, BP 120/80. What do you give?",answers:["Aspirin","Epinephrine IM 0.3 mg","Oxygen, monitor, transport (mild anaphylaxis = still serious)","Nothing, observe at home"],correct:2,explanation:"Early anaphylaxis with airway involvement (wheezing) warrants epinephrine AND oxygen, even if BP stable. Monitor for progression.",memory:"Any wheezing + allergic hx = Epi-pen + O₂ + Transport."},
+
+    {category:"Respiratory",question:"A 45-year-old has acute dyspnea, pink frothy sputum, and rales bilaterally. What is this?",answers:["Asthma","Acute pulmonary edema (cardiogenic)","Pneumonia","Pneumothorax"],correct:1,explanation:"Pink frothy sputum + rales = pulmonary edema (usually from CHF). Oxygen, upright position, rapid transport. ALS may give CPAP.",memory:"Pink frothy = Pulmonary edema = CHF. Sitting up helps."},
+
+    {category:"Pediatric",question:"A 4-year-old has fever, sore throat, and drooling. He can barely swallow. What do you suspect?",answers:["Common cold","Pharyngitis (strep throat)","Epiglottitis (keep CALM, no agitation, rapid transport)","Laryngitis"],correct:2,explanation:"Fever + drooling + dysphagia + stridor (often absent in epiglottitis) = concern for epiglottitis. Do NOT examine throat. Transport rapidly.",memory:"Drooling + fever + can't swallow = EPIGLOTTITIS risk. Transport, do NOT agitate."},
+
+    {category:"Shock",question:"A 60-year-old is in cardiogenic shock from an MI. HR 110, BP 85/60, rales. What is the treatment?",answers:["Give fluids aggressively","Oxygen, position of comfort (semi-upright to help breathing), monitor, ALS fluids carefully (may worsen pulmonary edema)","Elevate legs aggressively","Aspirin only"],correct:1,explanation:"Cardiogenic shock from MI = airway, oxygen, avoid fluid overload (already in pulmonary edema). ALS will titrate fluids carefully.",memory:"Cardiogenic shock = O₂, semi-upright, careful fluids (NOT aggressive)."},
+
+    {category:"Environmental",question:"A hiker is found confused after 6 hours in hot sun. Core temp ~40°C. Skin hot, dry. What is this?",answers:["Heat exhaustion","Heatstroke","Dehydration","Normal heat response"],correct:1,explanation:"Hot skin + altered LOC + high temp = heatstroke. Cool aggressively (remove clothes, wet down, fan), oxygen, rapid transport.",memory:"Heatstroke = HOT SKIN + ALTERED LOC = COOL NOW."},
+
+    {category:"Trauma",question:"An unrestrained driver struck a tree at high speed. He is awake, calm, and alert. What is your approach?",answers:["Discharge if no obvious injury","High-speed mechanism = potential for serious internal injury. Full assessment, oxygen, rapid transport.","Splint visible injuries only","Transport to nearest clinic"],correct:1,explanation:"Mechanism of injury (MOI) is critical. High-speed trauma can hide internal bleeding, organ injury. Treat seriously even if asymptomatic.",memory:"High MOI = High suspicion for serious injury. Transport all."},
+
+    {category:"Seizure",question:"A patient has had 3 seizures in the last 30 minutes. He is post-ictal. What is this condition?",answers:["Febrile seizure","Status epilepticus","Petit mal seizure","Simple partial seizure"],correct:1,explanation:"Status epilepticus = recurrent seizures without full recovery between them. Emergency. Oxygen, protect airway, rapid transport, ALS early.",memory:"Recurrent seizures = Status. Rapid transport, call ALS ASAP."},
+
+    {category:"Airway",question:"A choking 3-year-old cannot cough or cry. What is your action?",answers:["Encourage coughing","Abdominal thrusts for infant? NO — use back blows + chest thrusts. For toddler, abdominal thrusts OK.","Blind finger sweep","Perform CPR"],correct:1,explanation:"Choking infant <1 yr = back blows + chest thrusts. Toddler/child = abdominal thrusts (CPR if becomes unconscious).",memory:"Infant choking = Back blows + Chest thrusts (not abdo)."},
+
+    {category:"Poison",question:"A 34-year-old drank an unknown amount of antifreeze. He is alert, joking, normal vitals. What do you do?",answers:["Observe at home","Transport for evaluation (ethylene glycol toxicity is delayed 12–24 hrs, can be fatal)","Give activated charcoal","Wait for symptoms to appear"],correct:1,explanation:"Antifreeze (ethylene glycol) poisoning is insidious. Appears fine initially, then metabolic acidosis, renal failure. Transport all suspected cases.",memory:"Antifreeze = Delayed toxicity = Transport all cases."},
+
+    {category:"Cardiac",question:"A 58-year-old with palpitations is found to have an irregular rhythm at 160 bpm. He is alert, BP 100/65. What is the rhythm likely to be?",answers:["Atrial fibrillation with RVR","Sinus tachycardia","Ventricular tachycardia","Asystole"],correct:0,explanation:"Irregular rhythm + fast + alert = likely afib with RVR (atrial fibrillation with rapid ventricular response). Oxygen, monitor, transport, ALS.",memory:"Irregular fast + alert = Afib. Regular fast = V-tach or SVT."},
+
+    {category:"Respiratory",question:"A 67-year-old has acute dyspnea, chest pain, and leg swelling. You suspect PE (pulmonary embolism). What do you do?",answers:["Give aspirin and discharge","Oxygen, position of comfort, monitor, rapid transport, ALS may give heparin","Massage the leg","Elevate the leg aggressively"],correct:1,explanation:"Suspected PE = oxygen, position of comfort, monitor vital signs, avoid leg massage (may dislodge clot), rapid transport.",memory:"Dyspnea + leg swelling + chest pain = Possible PE. O₂, transport."},
+
+    {category:"Obstetrics",question:"A woman at 8 months pregnant has sudden severe abdominal pain and vaginal bleeding. She is in shock (BP 80/60, HR 130). What is the likely diagnosis?",answers:["Labor","Placenta previa","Abruptio placentae","Gestational diabetes"],correct:2,explanation:"Shock + severe pain + bleeding in 3rd trimester = abruption (placental abruption). Treat shock aggressively, rapid transport.",memory:"Pregnant + shock + pain + bleeding = ABRUPTION. Maternal/fetal emergency."},
+
+    {category:"Environmental",question:"A 45-year-old with known hypothermia (core temp 28°C) is found pulseless and apneic. He appears dead (rigid, no response). What is your action?",answers:["Pronounce dead at scene","Begin gentle CPR. Hypothermia = reversible. Transport without stopping CPR.","Vigorous rewarming","Assume rigor mortis and leave him"],correct:1,explanation:"Profound hypothermia can appear like death. Begin CPR gently, transport continuously. Rewarming occurs at hospital.",memory:"'Nobody is dead until warm and dead.' CPR in hypothermia."},
+
+    {category:"Allergic",question:"A 22-year-old has swollen lips/tongue and stridor 15 min after IV contrast for CT scan. BP 95/60. What is this?",answers:["Delayed reaction","Anaphylaxis = epinephrine IM NOW","Local swelling","Anxiety"],correct:1,explanation:"Angioedema + stridor + hypotension = anaphylaxis. Epinephrine IM 0.3 mg, oxygen, rapid transport.",memory:"Stridor + lip swelling + low BP = EPI-PEN NOW."},
+
+    {category:"Trauma",question:"A motorcycle rider has road rash (abrasion) with embedded gravel. How do you treat it?",answers:["Leave gravel in place until hospital","Gently clean with soap and water, remove debris, cover with sterile dressing","Apply direct pressure to stop bleeding","Do not touch the wound"],correct:1,explanation:"Road rash = abrasion. Gently cleanse, remove debris (to prevent tattooing), cover. If very dirty, transport for irrigation.",memory:"Road rash = Clean, remove dirt, cover."},
+
+    {category:"Cardiac",question:"An elderly patient has sudden onset chest pain and loss of consciousness. No pulse. You begin CPR. After 2 minutes, you deliver a shock (VF). What comes next?",answers:["Stop CPR and reassess rhythm","Resume CPR immediately for 2 minutes, then recheck rhythm","Wait 30 seconds before CPR","Give medications only"],correct:1,explanation:"Post-shock: resume CPR immediately. Check rhythm every 2 minutes after AED prompts. Do NOT repeatedly check for pulse.",memory:"Shock given = CPR resume NOW x 2 min. Cycle continues."},
+
+    {category:"Pediatric",question:"A 6-year-old has difficulty breathing, oxygen saturation 92%, and looks \"tired.\" What is your concern?",answers:["Minor respiratory distress","Fatigue = IMPENDING RESPIRATORY FAILURE. Oxygen, BVM ready, prepare for airway emergency, transport.","The child is fine, just tired","Observe for 1 hour"],correct:1,explanation:"A child who appears 'tired' or 'calm' during respiratory distress is compensating poorly and may arrest soon. Treat urgently.",memory:"Tired-looking kid + low O₂ = DANGER. Not reassuring."},
+
+    {category:"Poisoning",question:"A 16-year-old took an entire bottle of ibuprofen 30 minutes ago and is asymptomatic. What do you do?",answers:["Send home, no treatment needed","Contact poison control, offer activated charcoal (if protocol allows), transport","Wait for symptoms to appear at home","Force vomiting"],correct:1,explanation:"Overdose = poison control and transport. Timing matters for charcoal (usually <1 hr). Better safe than sorry.",memory:"Overdose = Poison Control 1-800-222-1222 + Transport."},
+
+    {category:"Shock",question:"A 3-year-old has fever, petechial rash, altered mental status, and poor perfusion. What is the likely diagnosis?",answers:["Scarlet fever","Septic shock (likely meningococcemia)","Chickenpox","Fifth disease"],correct:1,explanation:"Petechial rash + fever + shock in child = meningococcemia/sepsis. High-flow oxygen, IV access (ALS), rapid transport.",memory:"Petechiae + fever + altered = Meningococcal. EMERGENCY."},
+
+    {category:"Airway",question:"A patient has severe facial trauma with airway compromise. What is your priority?",answers:["Perform CPR","Manually clear airway, keep inline with C-spine if MOI suggests it, consider NPA or OPA if feasible, HIGH-FLOW O₂, rapid transport","Apply nasal cannula","Transport supine"],correct:1,explanation:"Facial trauma = airway emergency. Clear blood/secretions, oxygen, spine precautions, rapid transport. Have suction ready.",memory:"Facial trauma = Airway threat. Clear, O₂, transport NOW."},
+
+    {category:"Respiratory",question:"An adult has severe respiratory distress with unequal breath sounds and hypotension after a stab wound to the chest. What is this?",answers:["Simple pneumothorax","Tension pneumothorax (needle decompression if ALS trained)","Hemothorax","Pericardial tamponade"],correct:1,explanation:"Unequal BS + hypotension + stab wound = tension pneumothorax. Needle decompression 2nd ICS midclavicular line if ALS scope allows.",memory:"Unequal BS + shock + stab = Tension pneumo = EMERGENCY."},
+
+    {category:"Diabetes",question:"A diabetic patient is confused and has deep, rapid respirations (Kussmaul). Breath smells fruity. What is this?",answers:["Hypoglycemia","Diabetic ketoacidosis (DKA)","Hyperosmolar crisis","Lactic acidosis"],correct:1,explanation:"Kussmaul respirations + fruity breath + altered LOC = DKA. High-flow oxygen, IV fluids (ALS), rapid transport.",memory:"Fruity breath + deep fast breathing = DKA. Oxygen, transport."},
+
+    {category:"Trauma",question:"A 35-year-old has a crush injury to the leg trapped under machinery for 2 hours. The limb is pale, cool, no pedal pulse. What is the concern after extrication?",answers:["Compartment syndrome","Rhabdomyolysis and acute kidney injury from reperfusion","Simple fracture","Heat exhaustion"],correct:1,explanation:"Crush injury = tissue breakdown (rhabdomyolysis) on release. IV fluids (ALS), urine output monitoring, transport to renal-capable hospital.",memory:"Crush > 2 hrs = Rhabdo risk. Fluids critical post-extrication."},
+
+    {category:"Obstetrics",question:"A woman at 34 weeks is having contractions every 5 min and feels pressure. You are 45 minutes from hospital and she is beginning to push. What do you do?",answers:["Delay transport","Prepare for delivery en route. Gather clean linens, blankets, suction, bulb syringe. Position her for delivery.","Transport supine, feet elevated","Have her hold urine and stool"],correct:1,explanation:"Imminent delivery = prepare for on-scene or en-route delivery. Sterile field, warm blankets, airway equipment for infant.",memory:"Crowning/pressure = Prepare for delivery NOW."},
+
+    {category:"Cardiac",question:"A 48-year-old has chest pain and is found to have HR 130 with NO pulse palpable. You assume cardiac arrest and begin CPR. After 2 minutes, the monitor shows a rhythm. What is most likely?",answers:["Asystole","Pulseless electrical activity (PEA)","VF","Sinus rhythm"],correct:1,explanation:"No pulse + organized rhythm = PEA. Continue CPR, treat reversible causes (e.g., tension pneumo, massive PE, MI). ALS gives epinephrine.",memory:"Organized rhythm + NO PULSE = PEA. Keep CPR going."},
+
+    {category:"Pediatric",question:"A 2-year-old has sudden onset of severe abdominal pain, vomiting, and a sausage-shaped abdominal mass. What do you suspect?",answers:["Appendicitis","Intussusception (bowel-in-bowel telescoping)","Gastroenteritis","Hernia"],correct:1,explanation:"Intussusception = classic in toddlers. Sausage mass, severe colicky pain, 'currant jelly' stools. Gentle transport, NPO, ALS.",memory:"Sausage mass + severe pain + toddler = Intussusception."},
+
+    {category:"Environmental",question:"A hiker with heat exhaustion is confused, sweating profusely, and has a core temp of 39.5°C. What is your treatment?",answers:["Vigorous cooling at scene","Move to shade, give cool fluids (if alert), remove excess clothes, passive cooling, rapid transport","Wrap in blankets","Give salt tablets"],correct:1,explanation:"Heat exhaustion with altered mental status = move to shade, passive cooling, fluids if alert, monitor, transport.",memory:"Heat exhaustion = Shade, cool, fluids (if alert)."},
+
+    {category:"Trauma",question:"A cyclist struck a car. He has a femur fracture (obvious deformity). Pedal pulse is present but weak. What is your immobilization?",answers:["Do not move the leg; leave as is","Gentle alignment (if safe), traction splint, check distal pulse/sensation/motor","Rigid board splint","Elevate the leg immediately"],correct:1,explanation:"Femur fracture = traction splint (applies gentle longitudinal traction). Check neurovascular status before and after. Support alignment.",memory:"Femur = Traction splint. Check pulses before and after."},
+
+    {category:"Poisoning",question:"A 40-year-old took unknown pills 1 hour ago. He is alert, HR 130, BP 145/95, dilated pupils. What is suspected?",answers:["Opioid overdose","Stimulant overdose (amphetamine/cocaine)","Depressant overdose","Anticholinergic toxidrome"],correct:1,explanation:"Tachycardia + hypertension + dilated pupils = sympathomimetic (stimulant). Supportive care, cooling if hot, monitor, transport.",memory:"Fast + High BP + Dilated pupils = Cocaine/Meth."},
+];
+
+const flashcards = [
+    ["OPA (Oropharyngeal)","Unconscious, no gag reflex"],
+    ["NPA (Nasopharyngeal)","Gag reflex present; avoid in basilar skull fracture"],
+    ["Jaw Thrust","Trauma patient with suspected C-spine injury"],
+    ["BVM Ventilation","Slow/shallow breathing: 500–600 mL, 10–12/min"],
+    ["Tension Pneumothorax Signs","Absent breath sounds + JVD + hypotension + tracheal deviation"],
+    ["Early Shock","Tachycardia, pale, cool, anxious (compensated)"],
+    ["Last Known Well","Critical for stroke; determines thrombolytic window"],
+    ["Oral Glucose","Hypoglycemic + alert + can swallow: 15 g"],
+    ["Epinephrine IM","Anaphylaxis: 0.3 mg adult, 0.15 mg child <25 kg"],
+    ["Aspirin Dose","Chest pain: 325 mg (or 2 × 81 mg)"],
+    ["FAST Stroke Exam","Face drooping, Arm drift, Speech slurred, Time"],
+    ["Hypoglycemia Signs","Sudden, tremor, diaphoresis, cool/clammy, altered LOC"],
+    ["Hyperglycemia Signs","Gradual, warm/dry skin, deep/rapid breathing (Kussmaul), fruity breath"],
+    ["Seizure Management","Protect, Time, Position head to side, Do NOT restrain"],
+    ["Sucking Chest Wound","Occlusive dressing (3 sides in some protocols)"],
+    ["Tourniquet","2–3 inches above wound if arterial bleeding uncontrolled"],
+    ["C-Spine Immobilization","All trauma with MOI: maintain inline stabilization"],
+    ["CPR Compression Rate","100–120 compressions/min (adults and peds)"],
+    ["VF/Pulseless VT","Shock ASAP; minimize delay; resume CPR after shock"],
+    ["Epiglottitis","Fever + drooling + stridor = Do NOT agitate, transport rapidly"],
+    ["Abruptio Placentae","Shock + vaginal bleeding in 3rd trimester = EMERGENCY"],
+    ["Near-Drowning","BVM, O₂, watch for aspiration pneumonia (secondary drowning)"],
+    ["Pink Frothy Sputum","Pulmonary edema (CHF): O₂, upright position, CPAP (ALS)"],
+    ["Heatstroke","Hot skin + altered LOC: cool aggressively, O₂, transport"],
+    ["Hypothermia Arrest","Gentle CPR, no stopping until warm; 'Not dead till warm & dead'"],
+    ["Meningococcal Sepsis","Petechial rash + fever + shock = EMERGENCY, O₂, IV, transport"],
+    ["DKA","Kussmaul respirations + fruity breath + altered LOC: O₂, fluids, transport"],
+    ["Crush Injury >2 hrs","Rhabdomyolysis: IV fluids critical post-extrication"],
+    ["PEA","Organized rhythm + NO pulse: continue CPR, treat reversibles"],
+    ["Intussusception","Sausage-shaped mass + severe colicky pain in toddler"],
+    ["Stimulant OD","Tachycardia + hypertension + dilated pupils (cocaine/meth)"],
+    ["Opioid OD","Pinpoint pupils + respiratory depression: naloxone + BVM"],
+    ["Status Epilepticus","Recurrent seizures: O₂, protect airway, call ALS early"],
+    ["Cardiogenic Shock","MI: O₂, semi-upright (pulmonary edema), careful fluids"],
+    ["Croup","Barky cough + stridor in infant: cool mist, supportive"],
+    ["Antifreeze Poisoning","Appears fine initially, delayed toxicity: transport all cases"],
+    ["COPD + Hypoxia","Give O₂ (SpO2 <90%), monitor closely, don't withhold"],
+    ["Anaphylaxis Progression","Early = itching/hives; Severe = wheezing/swelling/shock"],
+    ["Femur Fracture","Traction splint; check neurovascular before/after"],
+    ["Road Rash","Clean, remove debris, cover with sterile dressing"],
+];
+
+const scenarios = [
+    {scenario:"45-year-old unresponsive. Snoring respirations. No gag reflex. SpO₂ 88%.",answer:"Insert OPA, position airway, oxygen, monitor."},
+    {scenario:"68-year-old with RR 8/min, shallow, cyanotic. Alert.",answer:"BVM ventilation NOW at 10–12/min. High-flow O₂."},
+    {scenario:"Trauma patient: pale, cool, clammy, HR 130, BP 88/60, weak pulse.",answer:"Hypovolemic shock. O₂, position, monitor, rapid transport. Call ALS."},
+    {scenario:"22-year-old: facial swelling, urticaria, wheezing, hypotension after bee sting.",answer:"Anaphylaxis. Epinephrine 0.3 mg IM. O₂. Rapid transport."},
+    {scenario:"67-year-old: sudden facial drooping, arm drift, slurred speech. 1400 hrs noted.",answer:"Possible stroke. FAST positive. Note time (critical for intervention). Rapid transport."},
+    {scenario:"34-year-old diabetic: confused, trembling, diaphoretic. Glucose 55 mg/dL. Alert.",answer:"Hypoglycemia. Oral glucose 15 g. Monitor 10 min. Transport if no improvement."},
+    {scenario:"Patient actively seizing. You are alone.",answer:"Protect from injury. Note time. Position head to side. Call 911. Do NOT restrain. Transport."},
+    {scenario:"42-year-old: absent right breath sounds, tracheal deviation, hypotension.",answer:"Tension pneumothorax. LOAD & GO. O₂. Monitor. ALS may decompress."},
+    {scenario:"Penetrating chest wound. Blood spurting with each breath.",answer:"Sucking wound. Seal with occlusive dressing (3 sides per protocol). O₂. Transport."},
+    {scenario:"18-year-old: arterial leg bleeding. Direct pressure not working.",answer:"Tourniquet 2–3 inches above wound. Tighten until bleeding stops. Time it."},
+    {scenario:"Basilar skull fracture suspected (Battle's sign, raccoon eyes).",answer:"NO NPA. OPA only. C-spine precautions. O₂. Transport."},
+    {scenario:"14-year-old asthmatic: wheezing, accessory muscles, speaks 1–2 words.",answer:"SEVERE asthma. High-flow O₂. Upright position. Rapid transport."},
+    {scenario:"68-year-old: unresponsive, pulseless, apneic. No pulse >10 sec.",answer:"Cardiac arrest. Begin CPR at 100–120/min. Call 911/ALS. Do NOT delay."},
+    {scenario:"3-year-old: stridor, fever, drooling, respiratory distress.",answer:"Possible epiglottitis. Keep calm. Allow position of comfort. Do NOT agitate. Transport."},
+    {scenario:"7-month pregnant: severe vaginal bleeding, shock. BP 80/60.",answer:"Abruptio placentae. Treat shock: O₂, position, fluids (ALS). RAPID transport."},
+    {scenario:"Woman crowning during labor.",answer:"Prepare for delivery. Support head as it emerges. Gentle traction if needed. Dry infant."},
+    {scenario:"45-year-old with 40% TBSA burns (legs + torso).",answer:"Cool burn, O₂, cover with clean dry cloth. IV fluids (ALS). Rapid transport."},
+    {scenario:"6-year-old ingested unknown substance 20 min ago. Alert.",answer:"Contact Poison Control 1-800-222-1222. Transport. Do NOT induce vomiting."},
+    {scenario:"40-year-old: deformed, swollen leg. Weak pedal pulse.",answer:"Gentle alignment. Splint. Check distal pulse/sensation/motor. Reassess after."},
+    {scenario:"Hypothermic patient (30°C) found in icy water, unresponsive, no pulse.",answer:"Gentle CPR. Transport WITHOUT stopping CPR. Passive rewarming. 'Not dead till warm & dead.'"},
+    {scenario:"55-year-old: pinpoint pupils, RR 6/min, unresponsive.",answer:"Opioid overdose. Naloxone 0.4–2.4 mg IM/IN/IV. BVM ventilation."},
+    {scenario:"52-year-old: chest pressure radiating to jaw/arm. BP 110/70, HR 88.",answer:"Aspirin (if alert, no allergy), O₂, position of comfort. Rapid transport."},
+    {scenario:"COPD patient on home O₂ at 2 L/min, now short of breath.",answer:"Monitor closely but give HIGH-FLOW O₂ if hypoxic. Do NOT withhold O₂."},
+    {scenario:"8-month-old: barky cough, stridor, fever.",answer:"Croup. Cool mist, supportive. O₂ if hypoxic. Transport if worsening."},
+    {scenario:"30-year-old: penetrating abdominal wound with bowel protruding.",answer:"Do NOT reinsert bowel. Moist sterile dressing. Knees bent (comfort). RAPID transport."},
+    {scenario:"72-year-old in VF (confirmed on AED).",answer:"Apply AED and SHOCK. CPR between shocks per AED. Continue until handoff."},
+    {scenario:"5-year-old pulled from pool, unresponsive, cyanotic.",answer:"BVM, O₂, rapid transport. Watch for secondary drowning (aspiration)."},
+    {scenario:"28-year-old: facial swelling, itching, mild wheezing after shellfish. BP 120/80, HR 100.",answer:"Early anaphylaxis. Epinephrine IM. O₂. Monitor for progression. Transport."},
+    {scenario:"45-year-old: pink frothy sputum, rales bilaterally, dyspnea.",answer:"Pulmonary edema (CHF). O₂, upright position, monitor. CPAP (ALS)."},
+    {scenario:"4-year-old: fever, sore throat, drooling, stridor.",answer:"Possible epiglottitis. Keep calm, upright position. Do NOT examine throat. RAPID transport."},
+    {scenario:"60-year-old in cardiogenic shock from MI: HR 110, BP 85/60, rales.",answer:"O₂, semi-upright (pulmonary edema present), careful fluids (may worsen). ALS titrates."},
+    {scenario:"Hiker, 6 hours in sun, confused, hot skin (40°C).",answer:"Heatstroke. Remove clothes, cool aggressively (water/fan), O₂. Rapid transport."},
+    {scenario:"Unrestrained driver, high-speed tree strike, awake and alert.",answer:"HIGH MOI = High suspicion. Full assessment, O₂, rapid transport (may have hidden injury)."},
+    {scenario:"Patient with 3 seizures in 30 min, post-ictal.",answer:"Status epilepticus. O₂, protect airway, rapid transport. Call ALS immediately."},
+    {scenario:"3-year-old choking, cannot cough or cry.",answer:"Back blows + chest thrusts (infant). Abdominal thrusts if >1 yr. CPR if unconscious."},
+    {scenario:"34-year-old drank antifreeze, appears fine, alert, normal vitals.",answer:"Delayed toxicity. Transport for evaluation (can be fatal). Do NOT discharge."},
+    {scenario:"58-year-old: palpitations, irregular rhythm at 160 bpm, alert, BP 100/65.",answer:"Likely AFib with RVR. O₂, monitor, transport. ALS evaluates."},
+    {scenario:"67-year-old: acute dyspnea, chest pain, leg swelling. Suspects PE.",answer:"O₂, position of comfort. Do NOT massage leg. Transport. ALS monitors."},
+    {scenario:"Woman at 8 mo pregnant: sudden abdominal pain, vaginal bleeding, shock.",answer:"Abruptio placentae. Aggressive shock treatment. RAPID transport. Maternal/fetal emergency."},
+    {scenario:"Profound hypothermia (28°C), appears dead, pulseless, rigid.",answer:"Gentle CPR continuously. Transport (do NOT pronounce). Rewarming at hospital."},
+    {scenario:"22-year-old: swollen lips/tongue, stridor 15 min after IV contrast. BP 95/60.",answer:"Anaphylaxis. Epinephrine 0.3 mg IM. O₂. Rapid transport."},
 ];
 
 let currentQuestion = 0;
 let correctAnswers = 0;
 let totalAnswers = 0;
-
-const flashcards = [
-["OPA","Unconscious + NO gag reflex"],
-["NPA","Gag reflex present"],
-["Shock","Cool clammy tachycardic"],
-["Stroke","Last known well"],
-["Pediatric arrest","Usually respiratory first"],
-["Tension pneumo","Absent lung sounds + JVD + hypotension"],
-["BVM","Slow or shallow breathing"],
-["Hypoglycemia","Sweaty confused diabetic"],
-["Anaphylaxis","Epinephrine"],
-["Priority","Airway Breathing Circulation"]
-];
-
 let flashIndex = 0;
 let flashFlipped = false;
-
-const scenarios = [
-{
-scenario:"You arrive to find a 19-year-old motorcycle crash patient screaming in pain with an obvious deformity to the leg. Respirations are 6 and shallow.",
-answer:"PRIORITY: Ventilate with BVM. NREMT always wants life threats first."
-},
-
-{
-scenario:"A child is sitting upright drooling with stridor and high fever.",
-answer:"Epiglottitis. Keep child calm. Avoid agitation. Rapid transport."
-},
-
-{
-scenario:"An elderly diabetic becomes combative and diaphoretic but can swallow.",
-answer:"Oral glucose."
-},
-
-{
-scenario:"Patient with chest trauma develops absent left lung sounds and hypotension.",
-answer:"Tension pneumothorax."
-},
-
-{
-scenario:"Unresponsive overdose patient with cyanosis and weak respirations.",
-answer:"Airway and BVM ventilation immediately."
-}
-];
-
 let scenarioIndex = 0;
 
-function renderQuestion(){
-
+function renderQuestion() {
     const q = questions[currentQuestion];
-
     document.getElementById("category").innerText = q.category;
-
     document.getElementById("question").innerText = q.question;
-
     const answersDiv = document.getElementById("answers");
-
     answersDiv.innerHTML = "";
-
     document.getElementById("explanation").style.display = "none";
 
-    q.answers.forEach((answer,index)=>{
-
+    q.answers.forEach((answer, index) => {
         const btn = document.createElement("div");
-
         btn.className = "answer";
-
         btn.innerText = answer;
-
-        btn.onclick = ()=>checkAnswer(index);
-
+        btn.onclick = () => checkAnswer(index);
         answersDiv.appendChild(btn);
-
     });
 
+    updateProgress();
 }
 
-function checkAnswer(index){
-
+function checkAnswer(index) {
     const q = questions[currentQuestion];
-
     const answerElements = document.querySelectorAll(".answer");
-
     totalAnswers++;
+    if (index === q.correct) correctAnswers++;
 
-    if(index === q.correct){
-        correctAnswers++;
-    }
-
-    answerElements.forEach((el,i)=>{
-
+    answerElements.forEach((el, i) => {
         el.classList.add("disabled");
-
-        if(i === q.correct){
-            el.classList.add("correct");
-        }
-
-        if(i === index && i !== q.correct){
-            el.classList.add("wrong");
-        }
-
+        if (i === q.correct) el.classList.add("correct");
+        if (i === index && i !== q.correct) el.classList.add("wrong");
     });
 
     updateStats();
-
-    const explanation = document.getElementById("explanation");
-
-    explanation.style.display = "block";
-
-    explanation.innerHTML = `
-        <strong>Explanation:</strong><br>${q.explanation}
-        <div class="memory">
-            <strong>Memory Lock:</strong><br>${q.memory}
-        </div>
-    `;
-
+    const exp = document.getElementById("explanation");
+    exp.style.display = "block";
+    exp.innerHTML = `<strong>Explanation:</strong><br>${q.explanation}<div class="memory"><strong>Memory Lock:</strong><br>${q.memory}</div>`;
 }
 
-function nextQuestion(){
-
-    currentQuestion++;
-
-    if(currentQuestion >= questions.length){
-        currentQuestion = 0;
-    }
-
+function nextQuestion() {
+    currentQuestion = (currentQuestion + 1) % questions.length;
     renderQuestion();
-
 }
 
-function updateStats(){
+function prevQuestion() {
+    currentQuestion = (currentQuestion - 1 + questions.length) % questions.length;
+    renderQuestion();
+}
 
+function updateStats() {
     document.getElementById("score").innerText = correctAnswers;
-
     document.getElementById("total").innerText = totalAnswers;
-
-    let percent = totalAnswers === 0
-        ? 0
-        : Math.round((correctAnswers/totalAnswers)*100);
-
+    const percent = totalAnswers === 0 ? 0 : Math.round((correctAnswers / totalAnswers) * 100);
     document.getElementById("percent").innerText = percent + "%";
-
 }
 
-function resetStats(){
-
-    correctAnswers = 0;
-    totalAnswers = 0;
-
-    updateStats();
-
+function updateProgress() {
+    const progress = ((currentQuestion + 1) / questions.length) * 100;
+    document.getElementById("progressFill").style.width = progress + "%";
 }
 
-function shuffleQuestions(){
-
-    for(let i = questions.length -1; i > 0; i--){
-
-        const j = Math.floor(Math.random() * (i+1));
-
-        [questions[i],questions[j]] = [questions[j],questions[i]];
-
+function resetStats() {
+    if (confirm("Reset all stats?")) {
+        correctAnswers = 0;
+        totalAnswers = 0;
+        updateStats();
     }
+}
 
+function shuffleQuestions() {
+    for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];
+    }
     currentQuestion = 0;
-
     renderQuestion();
-
 }
 
-function showSection(id){
-
-    const sections = [
-        "quizSection",
-        "flashSection",
-        "scenarioSection",
-        "cramSection"
-    ];
-
-    sections.forEach(section=>{
-
-        document.getElementById(section).classList.add("hidden");
-
-    });
-
-    document.getElementById(id).classList.remove("hidden");
-
+function showSection(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+    if (id === 'flashSection') renderFlashcard();
+    if (id === 'scenarioSection') renderScenario();
 }
 
-function renderFlashcard(){
-
+function renderFlashcard() {
     flashFlipped = false;
-
     document.getElementById("flashFront").style.display = "block";
-
     document.getElementById("flashBack").style.display = "none";
-
-    document.getElementById("flashFront").innerText =
-        flashcards[flashIndex][0];
-
-    document.getElementById("flashBack").innerText =
-        flashcards[flashIndex][1];
-
+    document.getElementById("flashFront").innerText = flashcards[flashIndex][0];
+    document.getElementById("flashBack").innerText = flashcards[flashIndex][1];
+    document.getElementById("flashCounter").innerText = `${flashIndex + 1} / ${flashcards.length}`;
 }
 
-function flipFlashcard(){
-
+function flipFlashcard() {
     flashFlipped = !flashFlipped;
-
-    document.getElementById("flashFront").style.display =
-        flashFlipped ? "none" : "block";
-
-    document.getElementById("flashBack").style.display =
-        flashFlipped ? "block" : "none";
-
+    document.getElementById("flashFront").style.display = flashFlipped ? "none" : "block";
+    document.getElementById("flashBack").style.display = flashFlipped ? "block" : "none";
 }
 
-function nextFlashcard(){
-
-    flashIndex++;
-
-    if(flashIndex >= flashcards.length){
-        flashIndex = 0;
-    }
-
+function nextFlashcard() {
+    flashIndex = (flashIndex + 1) % flashcards.length;
     renderFlashcard();
-
 }
 
-function renderScenario(){
-
-    document.getElementById("scenarioText").innerHTML =
-        "<strong>Scenario:</strong><br><br>" +
-        scenarios[scenarioIndex].scenario;
-
-    document.getElementById("scenarioAnswer").innerHTML =
-        "<strong>Priority Answer:</strong><br><br>" +
-        scenarios[scenarioIndex].answer;
-
+function prevFlashcard() {
+    flashIndex = (flashIndex - 1 + flashcards.length) % flashcards.length;
+    renderFlashcard();
 }
 
-function nextScenario(){
-
-    scenarioIndex++;
-
-    if(scenarioIndex >= scenarios.length){
-        scenarioIndex = 0;
+function shuffleFlashcards() {
+    for (let i = flashcards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
     }
-
-    renderScenario();
-
+    flashIndex = 0;
+    renderFlashcard();
 }
 
+function renderScenario() {
+    document.getElementById("scenarioText").innerHTML = "<strong>Scenario:</strong><br><br>" + scenarios[scenarioIndex].scenario;
+    document.getElementById("scenarioAnswer").innerHTML = "<strong>Key Actions:</strong><br><br>" + scenarios[scenarioIndex].answer;
+}
+
+function nextScenario() {
+    scenarioIndex = (scenarioIndex + 1) % scenarios.length;
+    renderScenario();
+}
+
+function prevScenario() {
+    scenarioIndex = (scenarioIndex - 1 + scenarios.length) % scenarios.length;
+    renderScenario();
+}
+
+// Initialize
 renderQuestion();
 renderFlashcard();
 renderScenario();
 updateStats();
-
 </script>
-
 </body>
 </html>
